@@ -1,0 +1,16 @@
+:root {
+  font-family: system-ui, sans-serif;
+  color: #212529;
+  background-color: #f8f9fa;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+}
+
+#app {
+  min-height: 100vh;
+}

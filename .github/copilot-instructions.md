@@ -12,6 +12,7 @@
 - Use Bootstrap Icons for interface icons; mark decorative icons with `aria-hidden="true"`.
 - Put Pawly-specific visual overrides in `src/style.css` rather than modifying dependency styles.
 - Preserve the existing responsive behavior, including the minimum body width of 320px.
+- Bulgarian is the application language: all user-facing content, including labels, navigation, messages, metadata, and page titles, must be written in Bulgarian.
 
 ## JavaScript Conventions
 

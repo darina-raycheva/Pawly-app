@@ -175,9 +175,59 @@ body {
   color: var(--pawly-muted) !important;
 }
 
+.pawly-auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  background:
+    radial-gradient(circle at 0 100%, rgba(232, 135, 107, 0.12), transparent 22rem),
+    radial-gradient(circle at 100% 0, rgba(220, 233, 223, 0.8), transparent 30rem),
+    var(--pawly-cream);
+}
+
+.pawly-auth-brand .pawly-brand {
+  text-decoration: none;
+}
+
+.pawly-auth-card {
+  background-color: rgba(255, 255, 255, 0.88);
+}
+
+.pawly-text-link {
+  color: var(--pawly-teal-dark);
+  text-decoration-color: rgba(29, 94, 91, 0.35);
+  text-underline-offset: 0.18em;
+}
+
+.pawly-text-link:hover,
+.pawly-text-link:focus {
+  color: var(--pawly-coral);
+}
+
+.form-check-input {
+  border-color: var(--pawly-border);
+}
+
+.form-check-input:checked {
+  background-color: var(--pawly-teal);
+  border-color: var(--pawly-teal);
+}
+
+.invalid-feedback {
+  font-size: 0.82rem;
+}
+
+.alert {
+  border-radius: 0.75rem;
+}
+
 @media (min-width: 768px) {
   .pawly-page {
     padding-top: 3.5rem;
     padding-bottom: 5rem;
+  }
+
+  .pawly-auth-page {
+    align-items: center;
   }
 }

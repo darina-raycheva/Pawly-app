@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import './style.css'
+import { renderAuthPage } from './js/pages/auth.js'
 
 const page = document.body.dataset.page || 'Home'
 const pageLabels = {
@@ -17,6 +18,9 @@ const pageLabels = {
 }
 const pageLabel = pageLabels[page] || pageLabels.Home
 
+if (page === 'Login' || page === 'Register') {
+  renderAuthPage(page)
+} else {
 document.querySelector('#app').innerHTML = `
   <nav class="navbar navbar-expand-md pawly-navbar sticky-top" aria-label="Основна навигация">
     <div class="container">
@@ -58,3 +62,4 @@ document.querySelector('#app').innerHTML = `
     </div>
   </main>
 `
+}

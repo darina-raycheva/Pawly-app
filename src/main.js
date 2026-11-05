@@ -3,6 +3,8 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import './style.css'
 import { renderAuthPage } from './js/pages/auth.js'
+import { renderPetsPage } from './js/pages/pets.js'
+import { renderPetDetailsPage } from './js/pages/pet-details.js'
 
 const page = document.body.dataset.page || 'Home'
 const pageLabels = {
@@ -21,6 +23,21 @@ const pageLabel = pageLabels[page] || pageLabels.Home
 if (page === 'Login' || page === 'Register') {
   renderAuthPage(page)
 } else {
+const pageContent = page === 'Pets'
+  ? `
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+      <div><p class="pawly-eyebrow mb-2"><i class="bi bi-sparkle me-1" aria-hidden="true"></i>Грижата за любимеца е лесна</p><h1 class="pawly-title display-5 mb-2">Моите любимци</h1><p class="pawly-subtitle mb-0">Всички профили на любимците ви на едно място.</p></div>
+      <button class="btn btn-primary" type="button" data-add-pet><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Добави любимец</button>
+    </div>
+    <div class="alert d-none" data-page-status role="status"></div>
+    <div data-pet-form-container class="mb-4"></div>
+    <div data-pets-list></div>`
+  : page === 'Pet Details'
+    ? `<div data-pet-details></div>`
+    : `
+    <div class="mb-4"><p class="pawly-eyebrow mb-2"><i class="bi bi-sparkle me-1" aria-hidden="true"></i>Грижата за любимеца е лесна</p><h1 class="pawly-title display-5 mb-2">${pageLabel}</h1><p class="pawly-subtitle mb-0">Спокойно и грижовно място за щастлив и здрав любимец.</p></div>
+    <section class="card pawly-card pawly-placeholder" aria-labelledby="placeholder-title"><div><div class="pawly-placeholder-icon mb-3"><i class="bi bi-paw-fill" aria-hidden="true"></i></div><h2 id="placeholder-title" class="h4 pawly-title mb-2">Вашето пространство в Pawly е готово</h2><p class="text-muted mb-0">Тази страница е готова за бъдещо развитие.</p></div></section>`
+
 document.querySelector('#app').innerHTML = `
   <nav class="navbar navbar-expand-md pawly-navbar sticky-top" aria-label="Основна навигация">
     <div class="container">
@@ -44,22 +61,11 @@ document.querySelector('#app').innerHTML = `
   <main class="container pawly-page">
     <div class="row justify-content-center">
       <div class="col-12 col-lg-10">
-        <div class="mb-4">
-          <p class="pawly-eyebrow mb-2"><i class="bi bi-sparkle me-1" aria-hidden="true"></i>Грижата за любимеца е лесна</p>
-          <h1 class="pawly-title display-5 mb-2">${pageLabel}</h1>
-          <p class="pawly-subtitle mb-0">Спокойно и грижовно място за щастлив и здрав любимец.</p>
-        </div>
-        <section class="card pawly-card pawly-placeholder" aria-labelledby="placeholder-title">
-          <div>
-            <div class="pawly-placeholder-icon mb-3">
-              <i class="bi bi-paw-fill" aria-hidden="true"></i>
-            </div>
-            <h2 id="placeholder-title" class="h4 pawly-title mb-2">Вашето пространство в Pawly е готово</h2>
-            <p class="text-muted mb-0">Тази страница е готова за бъдещо развитие.</p>
-          </div>
-        </section>
+        ${pageContent}
       </div>
     </div>
   </main>
 `
+  if (page === 'Pets') renderPetsPage()
+  if (page === 'Pet Details') renderPetDetailsPage()
 }

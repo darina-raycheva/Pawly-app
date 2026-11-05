@@ -1,3 +1,5 @@
+import { getSupabaseClient } from '../services/supabase.js'
+
 const authPageContent = {
   Login: {
     eyebrow: 'Добре дошли обратно',
@@ -99,6 +101,88 @@ function setupPasswordToggle(form) {
   })
 }
 
+function setFormStatus(status, type, message) {
+  status.classList.remove('d-none', 'alert-success', 'alert-danger')
+  status.classList.add(type === 'success' ? 'alert-success' : 'alert-danger')
+  status.textContent = message
+}
+
+function getAuthErrorMessage(error, page) {
+  if (error.message === 'Липсва конфигурация за Supabase.') {
+    return 'Автентикацията не е конфигурирана. Моля, свържете се с администратор.'
+  }
+
+  if (page === 'Login' && error.message === 'Invalid login credentials') {
+    return 'Имейлът или паролата са неправилни.'
+  }
+
+  if (page === 'Register' && error.message === 'User already registered') {
+    return 'Този имейл вече е регистриран.'
+  }
+
+  return 'Възникна грешка. Моля, опитайте отново.'
+}
+
+async function submitAuthForm(form, page) {
+  const formData = new FormData(form)
+  const email = formData.get('email')
+  const password = formData.get('password')
+  const submitButton = form.querySelector('button[type="submit"]')
+  const status = form.querySelector('[data-form-status]')
+
+  if (submitButton.disabled) {
+    return
+  }
+
+  submitButton.disabled = true
+  submitButton.setAttribute('aria-busy', 'true')
+
+  try {
+    const supabase = getSupabaseClient()
+
+    if (page === 'Login') {
+      const { error } = await supabase.auth.signInWithPassword({ email, password })
+
+      if (error) {
+        throw error
+      }
+
+      window.location.assign('/dashboard.html')
+      return
+    }
+
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          first_name: formData.get('firstName'),
+          last_name: formData.get('lastName'),
+        },
+      },
+    })
+
+    if (error) {
+      throw error
+    }
+
+    setFormStatus(
+      status,
+      'success',
+      data.session
+        ? 'Регистрацията е успешна. Добре дошли в Pawly!'
+        : 'Регистрацията е успешна. Проверете имейла си, за да потвърдите профила си.',
+    )
+    form.reset()
+    form.classList.remove('was-validated')
+  } catch (error) {
+    setFormStatus(status, 'error', getAuthErrorMessage(error, page))
+  } finally {
+    submitButton.disabled = false
+    submitButton.removeAttribute('aria-busy')
+  }
+}
+
 function setupValidation(form, page) {
   const password = form.querySelector('#password')
   const confirmPassword = form.querySelector('#confirm-password')
@@ -118,22 +202,18 @@ function setupValidation(form, page) {
   password.addEventListener('input', validatePasswordMatch)
   confirmPassword?.addEventListener('input', validatePasswordMatch)
 
-  form.addEventListener('submit', (event) => {
+  form.addEventListener('submit', async (event) => {
     event.preventDefault()
     validatePasswordMatch()
     form.classList.add('was-validated')
     status.classList.remove('d-none', 'alert-success', 'alert-danger')
 
     if (!form.checkValidity()) {
-      status.classList.add('alert-danger')
-      status.textContent = 'Моля, проверете маркираните полета и опитайте отново.'
+      setFormStatus(status, 'error', 'Моля, проверете маркираните полета и опитайте отново.')
       return
     }
 
-    status.classList.add('alert-success')
-    status.textContent = page === 'Login'
-      ? 'Формата е попълнена коректно. Входът ще бъде добавен на следващ етап.'
-      : 'Формата е попълнена коректно. Регистрацията ще бъде добавена на следващ етап.'
+    await submitAuthForm(form, page)
   })
 }
 

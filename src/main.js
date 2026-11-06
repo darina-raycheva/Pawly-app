@@ -5,6 +5,7 @@ import './style.css'
 import { renderAuthPage } from './js/pages/auth.js'
 import { renderPetsPage } from './js/pages/pets.js'
 import { renderPetDetailsPage } from './js/pages/pet-details.js'
+import { renderHealthRecordsPage } from './js/pages/health-records.js'
 
 const page = document.body.dataset.page || 'Home'
 const pageLabels = {
@@ -14,7 +15,7 @@ const pageLabels = {
   Dashboard: 'Табло',
   Pets: 'Домашни любимци',
   'Pet Details': 'Подробности за любимец',
-  'Health Record': 'Здравен запис',
+  'Health Record': 'Здравни записи',
   Profile: 'Профил',
   Admin: 'Администрация',
 }
@@ -32,6 +33,15 @@ const pageContent = page === 'Pets'
     <div class="alert d-none" data-page-status role="status"></div>
     <div data-pet-form-container class="mb-4"></div>
     <div data-pets-list></div>`
+  : page === 'Health Record'
+    ? `
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+      <div><p class="pawly-eyebrow mb-2"><i class="bi bi-heart-pulse me-1" aria-hidden="true"></i>Здравето на любимеца е важно</p><h1 class="pawly-title display-5 mb-2">Здравни записи</h1><p class="pawly-subtitle mb-0">Подредете ваксинации, прегледи и лечения на едно място.</p></div>
+      <button class="btn btn-primary" type="button" data-add-health-record><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Добави запис</button>
+    </div>
+    <div class="alert d-none" data-page-status role="status"></div>
+    <div data-health-record-form-container></div>
+    <div data-health-records-list></div>`
   : page === 'Pet Details'
     ? `<div data-pet-details></div>`
     : `
@@ -68,4 +78,5 @@ document.querySelector('#app').innerHTML = `
 `
   if (page === 'Pets') renderPetsPage()
   if (page === 'Pet Details') renderPetDetailsPage()
+  if (page === 'Health Record') renderHealthRecordsPage()
 }

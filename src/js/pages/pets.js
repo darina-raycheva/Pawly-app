@@ -1,5 +1,5 @@
 import { requireUser } from '../services/auth.js'
-import { createPet, deletePet, listPets, updatePet } from '../services/pets.js'
+import { createPet, deletePet, getPetPhotoUrl, listPets, updatePet, uploadPetPhoto } from '../services/pets.js'
 import { fillPetForm, readPetForm } from '../utils/pet-validation.js'
 
 const sexLabels = { male: 'Мъжки', female: 'Женски', unknown: 'Не е посочен' }
@@ -13,6 +13,11 @@ function petForm(pet) {
       </div>
       <div class="alert d-none" data-form-status role="status"></div>
       <div class="row g-3">
+        <div class="col-12">
+          <label class="form-label" for="pet-photo">Снимка на любимеца</label>
+          <input class="form-control" id="pet-photo" name="photo" type="file" accept="image/jpeg,image/png,image/webp" />
+          <div class="form-text">JPG, PNG или WebP до 5 MB.</div>
+        </div>
         <div class="col-md-6">
           <label class="form-label" for="pet-name">Име *</label>
           <input class="form-control" id="pet-name" name="name" required maxlength="100" />
@@ -73,7 +78,7 @@ function renderPets(container, pets) {
     <div class="col-12 col-md-6">
       <article class="card pawly-card h-100 p-4">
         <div class="d-flex justify-content-between gap-3">
-          <div><div class="pawly-placeholder-icon mb-3"><i class="bi bi-paw-fill" aria-hidden="true"></i></div><h2 class="h4 pawly-title mb-1">${pet.name}</h2><p class="text-muted mb-0">${formatPetDetails(pet)}</p></div>
+          <div>${pet.photoUrl ? `<img class="pawly-pet-photo mb-3" src="${pet.photoUrl}" alt="Снимка на ${pet.name}" />` : '<div class="pawly-placeholder-icon mb-3"><i class="bi bi-paw-fill" aria-hidden="true"></i></div>'}<h2 class="h4 pawly-title mb-1">${pet.name}</h2><p class="text-muted mb-0">${formatPetDetails(pet)}</p></div>
           <div class="dropdown"><button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="dropdown" aria-label="Действия за ${pet.name}"><i class="bi bi-three-dots-vertical" aria-hidden="true"></i></button><ul class="dropdown-menu dropdown-menu-end"><li><a class="dropdown-item" href="/pet-details.html?id=${encodeURIComponent(pet.id)}">Преглед</a></li><li><button class="dropdown-item" type="button" data-edit-pet="${pet.id}">Редактиране</button></li><li><button class="dropdown-item text-danger" type="button" data-delete-pet="${pet.id}">Изтриване</button></li></ul></div>
         </div>
         ${pet.weight ? `<p class="small text-muted mt-3 mb-0"><i class="bi bi-speedometer2 me-1" aria-hidden="true"></i>${pet.weight} кг</p>` : ''}
@@ -99,6 +104,12 @@ export async function renderPetsPage() {
   const load = async () => {
     listContainer.innerHTML = '<div class="text-center text-muted py-5">Зареждане на любимците...</div>'
     pets = await listPets()
+    pets = await Promise.all(
+      pets.map(async (pet) => ({
+        ...pet,
+        photoUrl: await getPetPhotoUrl(user.id, pet.id),
+      })),
+    )
     renderPets(listContainer, pets)
   }
   const openForm = (pet) => {
@@ -111,13 +122,17 @@ export async function renderPetsPage() {
       event.preventDefault()
       const { errors, pet: values } = readPetForm(form)
       const status = form.querySelector('[data-form-status]')
+      const photo = form.elements.photo.files[0]
+      if (photo && (!['image/jpeg', 'image/png', 'image/webp'].includes(photo.type) || photo.size > 5 * 1024 * 1024)) {
+        return setStatus(status, 'danger', 'Снимката трябва да бъде JPG, PNG или WebP файл до 5 MB.')
+      }
       if (errors.length) return setStatus(status, 'danger', errors.join(' '))
       const button = form.querySelector('button[type="submit"]')
       button.disabled = true
       button.setAttribute('aria-busy', 'true')
       try {
-        if (pet) await updatePet(pet.id, values)
-        else await createPet(user.id, values)
+        const savedPet = pet ? await updatePet(pet.id, values) : await createPet(user.id, values)
+        if (photo) await uploadPetPhoto(user.id, savedPet.id, photo)
         formContainer.innerHTML = ''
         await load()
         setStatus(document.querySelector('[data-page-status]'), 'success', pet ? 'Промените са запазени.' : 'Любимецът е добавен успешно.')

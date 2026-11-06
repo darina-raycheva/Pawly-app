@@ -1,5 +1,5 @@
 import { requireUser } from '../services/auth.js'
-import { getPet } from '../services/pets.js'
+import { getPet, getPetPhotoUrl } from '../services/pets.js'
 
 export async function renderPetDetailsPage() {
   const user = await requireUser()
@@ -16,10 +16,11 @@ export async function renderPetDetailsPage() {
       container.innerHTML = '<div class="alert alert-warning">Любимецът не е намерен или нямате достъп до него.</div>'
       return
     }
+    const photoUrl = await getPetPhotoUrl(user.id, pet.id)
     container.innerHTML = `
       <article class="card pawly-card p-4 p-md-5">
         <a class="pawly-text-link d-inline-block mb-4" href="/pets.html"><i class="bi bi-arrow-left me-1" aria-hidden="true"></i>Назад към любимците</a>
-        <div class="pawly-placeholder-icon mb-3"><i class="bi bi-paw-fill" aria-hidden="true"></i></div>
+        ${photoUrl ? `<img class="pawly-pet-photo mb-3" src="${photoUrl}" alt="Снимка на ${pet.name}" />` : '<div class="pawly-placeholder-icon mb-3"><i class="bi bi-paw-fill" aria-hidden="true"></i></div>'}
         <h2 class="pawly-title">${pet.name}</h2>
         <dl class="row mt-4 mb-0">
           <dt class="col-sm-4 mb-2">Вид</dt><dd class="col-sm-8 mb-2">${pet.species}</dd>

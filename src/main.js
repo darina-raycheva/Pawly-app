@@ -6,6 +6,9 @@ import { renderAuthPage } from './js/pages/auth.js'
 import { renderPetsPage } from './js/pages/pets.js'
 import { renderPetDetailsPage } from './js/pages/pet-details.js'
 import { renderHealthRecordsPage } from './js/pages/health-records.js'
+import { renderDashboardPage } from './js/pages/dashboard.js'
+import { renderProfilePage } from './js/pages/profile.js'
+import { getSupabaseClient } from './js/services/supabase.js'
 
 const page = document.body.dataset.page || 'Home'
 const pageLabels = {
@@ -24,7 +27,11 @@ const pageLabel = pageLabels[page] || pageLabels.Home
 if (page === 'Login' || page === 'Register') {
   renderAuthPage(page)
 } else {
-const pageContent = page === 'Pets'
+const pageContent = page === 'Dashboard'
+  ? '<div data-dashboard></div>'
+  : page === 'Profile'
+    ? '<div data-profile></div>'
+    : page === 'Pets'
   ? `
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
       <div><p class="pawly-eyebrow mb-2"><i class="bi bi-sparkle me-1" aria-hidden="true"></i>Грижата за любимеца е лесна</p><h1 class="pawly-title display-5 mb-2">Моите любимци</h1><p class="pawly-subtitle mb-0">Всички профили на любимците ви на едно място.</p></div>
@@ -59,12 +66,7 @@ document.querySelector('#app').innerHTML = `
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="pawlyNavigation">
-        <div class="navbar-nav ms-auto gap-md-1">
-          <a class="nav-link pawly-nav-link px-3" href="/dashboard.html">Табло</a>
-          <a class="nav-link pawly-nav-link px-3" href="/pets.html">Моите любимци</a>
-          <a class="nav-link pawly-nav-link px-3" href="/health-record.html">Здравни записи</a>
-          <a class="nav-link pawly-nav-link px-3" href="/profile.html">Профил</a>
-        </div>
+        <div class="navbar-nav ms-auto gap-md-1" data-session-navigation></div>
       </div>
     </div>
   </nav>
@@ -76,7 +78,39 @@ document.querySelector('#app').innerHTML = `
     </div>
   </main>
 `
+
+function renderNavigation(session) {
+  const navigation = document.querySelector('[data-session-navigation]')
+  if (!navigation) return
+
+  navigation.innerHTML = session
+    ? `
+      <a class="nav-link pawly-nav-link px-3" href="/dashboard.html">Табло</a>
+      <a class="nav-link pawly-nav-link px-3" href="/pets.html">Моите любимци</a>
+      <a class="nav-link pawly-nav-link px-3" href="/health-record.html">Здравни записи</a>
+      <a class="nav-link pawly-nav-link px-3" href="/profile.html">Профил</a>`
+    : `
+      <a class="nav-link pawly-nav-link px-3" href="/index.html">Начало</a>
+      <a class="nav-link pawly-nav-link px-3" href="/login.html">Вход</a>`
+}
+
+async function setupNavigation() {
+  try {
+    const supabase = getSupabaseClient()
+    const { data, error } = await supabase.auth.getSession()
+    if (error) throw error
+    renderNavigation(data.session)
+    supabase.auth.onAuthStateChange((_event, session) => renderNavigation(session))
+  } catch (error) {
+    renderNavigation(null)
+  }
+}
+
+setupNavigation()
+
   if (page === 'Pets') renderPetsPage()
   if (page === 'Pet Details') renderPetDetailsPage()
   if (page === 'Health Record') renderHealthRecordsPage()
+  if (page === 'Dashboard') renderDashboardPage()
+  if (page === 'Profile') renderProfilePage()
 }

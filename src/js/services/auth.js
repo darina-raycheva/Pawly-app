@@ -26,3 +26,26 @@ export async function requireUser() {
 
   return data.user
 }
+
+export async function updateUserProfile({ firstName, lastName }) {
+  const { data, error } = await getSupabaseClient().auth.updateUser({
+    data: {
+      first_name: firstName,
+      last_name: lastName,
+    },
+  })
+
+  if (error) {
+    throw error
+  }
+
+  return data.user
+}
+
+export async function signOut() {
+  const { error } = await getSupabaseClient().auth.signOut()
+
+  if (error) {
+    throw error
+  }
+}

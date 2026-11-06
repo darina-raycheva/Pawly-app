@@ -130,6 +130,13 @@ body {
   font-size: 1.75rem;
 }
 
+.pawly-pet-photo {
+  width: 7rem;
+  height: 7rem;
+  border-radius: 1.25rem;
+  object-fit: cover;
+}
+
 .btn {
   border-radius: 0.75rem;
   font-weight: 800;

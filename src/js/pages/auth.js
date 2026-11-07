@@ -2,20 +2,20 @@ import { getSupabaseClient } from '../services/supabase.js'
 
 const authPageContent = {
   Login: {
-    eyebrow: 'Добре дошли обратно',
-    title: 'Влезте в Pawly',
+    eyebrow: 'Радваме се да те видим отново',
+    title: 'Влез в Pawly',
     subtitle: 'Продължете да се грижите за любимеца си с лекота.',
     submitLabel: 'Вход',
-    alternateText: 'Нямате профил?',
+    alternateText: 'Нямаш профил?',
     alternateLink: 'Регистрация',
     alternateHref: '/register.html',
   },
   Register: {
-    eyebrow: 'Вашето място за грижа',
-    title: 'Създайте Pawly профил',
-    subtitle: 'Организирайте грижите за любимеца си на едно спокойно място.',
+    eyebrow: 'Твоето място за грижа',
+    title: 'Създай Pawly профил',
+    subtitle: 'Организирай грижите за любимеца си на едно спокойно място.',
     submitLabel: 'Регистрация',
-    alternateText: 'Вече имате профил?',
+    alternateText: 'Вече имаш профил?',
     alternateLink: 'Вход',
     alternateHref: '/login.html',
   },
@@ -26,7 +26,7 @@ function renderLoginForm() {
     <div class="mb-3">
       <label class="form-label" for="email">Имейл</label>
       <input class="form-control" id="email" name="email" type="email" autocomplete="email"
-        placeholder="вашият@email.bg" required />
+        placeholder="имейл@пример.bg" required />
       <div class="invalid-feedback">Моля, въведете валиден имейл адрес.</div>
     </div>
     <div class="mb-3">
@@ -64,7 +64,7 @@ function renderRegisterForm() {
     <div class="mb-3">
       <label class="form-label" for="email">Имейл</label>
       <input class="form-control" id="email" name="email" type="email" autocomplete="email"
-        placeholder="вашият@email.bg" required />
+        placeholder="имейл@пример.bg" required />
       <div class="invalid-feedback">Моля, въведете валиден имейл адрес.</div>
     </div>
     <div class="mb-3">
@@ -74,7 +74,7 @@ function renderRegisterForm() {
       <div class="invalid-feedback">Паролата трябва да съдържа поне 8 символа.</div>
     </div>
     <div class="mb-3">
-      <label class="form-label" for="confirm-password">Потвърдете паролата</label>
+      <label class="form-label" for="confirm-password">Потвърди паролата</label>
       <input class="form-control" id="confirm-password" name="confirmPassword" type="password"
         autocomplete="new-password" minlength="8" data-password-field required />
       <div class="invalid-feedback">Паролите трябва да съвпадат.</div>
@@ -109,7 +109,7 @@ function setFormStatus(status, type, message) {
 
 function getAuthErrorMessage(error, page) {
   if (error.message === 'Липсва конфигурация за Supabase.') {
-    return 'Автентикацията не е конфигурирана. Моля, свържете се с администратор.'
+    return 'Автентикацията не е конфигурирана. Моля, свържи се с администратор.'
   }
 
   if (page === 'Login' && error.message === 'Invalid login credentials') {
@@ -120,7 +120,7 @@ function getAuthErrorMessage(error, page) {
     return 'Този имейл вече е регистриран.'
   }
 
-  return 'Възникна грешка. Моля, опитайте отново.'
+  return 'Възникна грешка. Моля, опитай отново.'
 }
 
 async function submitAuthForm(form, page) {
@@ -170,8 +170,8 @@ async function submitAuthForm(form, page) {
       status,
       'success',
       data.session
-        ? 'Регистрацията е успешна. Добре дошли в Pawly!'
-        : 'Регистрацията е успешна. Проверете имейла си, за да потвърдите профила си.',
+        ? 'Регистрацията е успешна. Добре дошъл в Pawly!'
+        : 'Регистрацията е успешна. Провери имейла си, за да потвърдиш профила си.',
     )
     form.reset()
     form.classList.remove('was-validated')
@@ -209,7 +209,7 @@ function setupValidation(form, page) {
     status.classList.remove('d-none', 'alert-success', 'alert-danger')
 
     if (!form.checkValidity()) {
-      setFormStatus(status, 'error', 'Моля, проверете маркираните полета и опитайте отново.')
+      setFormStatus(status, 'error', 'Моля, провери маркираните полета и опитай отново.')
       return
     }
 

@@ -1027,6 +1027,10 @@ html {
   padding-bottom: 2.5rem;
 }
 
+.pawly-hero > .row {
+  width: 100%;
+}
+
 .pawly-hero::before {
   position: absolute;
   z-index: -1;

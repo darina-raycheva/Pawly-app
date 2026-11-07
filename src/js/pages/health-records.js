@@ -36,14 +36,14 @@ function recordForm(record, pets) {
         <div class="col-md-6">
           <label class="form-label" for="health-record-pet">Любимец *</label>
           <select class="form-select" id="health-record-pet" name="petId" required>
-            <option value="">Изберете любимец</option>
+            <option value="">Избери любимец</option>
             ${pets.map((pet) => `<option value="${escapeHtml(pet.id)}">${escapeHtml(pet.name)}</option>`).join('')}
           </select>
         </div>
         <div class="col-md-6">
           <label class="form-label" for="health-record-type">Вид запис *</label>
           <select class="form-select" id="health-record-type" name="recordType" required>
-            <option value="">Изберете вид</option>
+            <option value="">Избери вид</option>
             ${Object.entries(recordTypeLabels).map(([value, label]) => `<option value="${value}">${label}</option>`).join('')}
           </select>
         </div>
@@ -79,7 +79,7 @@ function renderRecords(container, records) {
         <div>
           <div class="pawly-placeholder-icon mb-3"><i class="bi bi-heart-pulse" aria-hidden="true"></i></div>
           <h2 class="h4 pawly-title">Все още нямате здравни записи</h2>
-          <p class="text-muted mb-0">Добавете първия запис, за да следите грижите за любимеца си.</p>
+          <p class="text-muted mb-0">Добави първия запис, за да следиш грижите за любимеца си.</p>
         </div>
       </div>`
     return
@@ -134,10 +134,10 @@ export async function renderHealthRecordsPage() {
     renderRecords(listContainer, records)
     addButton.disabled = !pets.length
     if (!pets.length) {
-      setStatus(pageStatus, 'warning', 'Добавете любимец, преди да създадете здравен запис.')
+      setStatus(pageStatus, 'warning', 'Добави любимец, преди да създадеш здравен запис.')
     }
   } catch (error) {
-    setStatus(pageStatus, 'danger', 'Здравните записи не можаха да бъдат заредени. Моля, опитайте отново.')
+    setStatus(pageStatus, 'danger', 'Здравните записи не можаха да бъдат заредени. Моля, опитай отново.')
     return
   }
 
@@ -191,7 +191,7 @@ export async function renderHealthRecordsPage() {
         await loadRecords()
         setStatus(pageStatus, 'success', isEditing ? 'Промените са запазени.' : 'Здравният запис е добавен успешно.')
       } catch (error) {
-        setStatus(status, 'danger', 'Здравният запис не можа да бъде запазен. Моля, опитайте отново.')
+        setStatus(status, 'danger', 'Здравният запис не можа да бъде запазен. Моля, опитай отново.')
       } finally {
         button.disabled = false
         button.removeAttribute('aria-busy')
@@ -207,7 +207,7 @@ export async function renderHealthRecordsPage() {
       openForm(records.find((record) => record.id === editButton.dataset.editRecord))
       return
     }
-    if (deleteButton && window.confirm('Сигурни ли сте, че искате да изтриете този здравен запис?')) {
+    if (deleteButton && window.confirm('Искаш ли да изтриеш този здравен запис?')) {
       deleteButton.disabled = true
       try {
         await deleteHealthRecord(deleteButton.dataset.deleteRecord)
@@ -215,7 +215,7 @@ export async function renderHealthRecordsPage() {
         setStatus(pageStatus, 'success', 'Здравният запис е изтрит.')
       } catch (error) {
         deleteButton.disabled = false
-        setStatus(pageStatus, 'danger', 'Здравният запис не можа да бъде изтрит. Моля, опитайте отново.')
+        setStatus(pageStatus, 'danger', 'Здравният запис не можа да бъде изтрит. Моля, опитай отново.')
       }
     }
   })

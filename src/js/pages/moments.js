@@ -3,8 +3,8 @@ import { generateCaptionSuggestions } from '../services/caption-assistant.js'
 const MAX_PHOTOS = 3
 const MAX_FILE_SIZE = 5 * 1024 * 1024
 const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp']
-const DISPLAY_FONT = '"Avenir Next", "Trebuchet MS", "Segoe UI", sans-serif'
-const BODY_FONT = '"Nunito", "Segoe UI", sans-serif'
+const DISPLAY_FONT = '"Trebuchet MS", "Segoe UI", Arial, sans-serif'
+const BODY_FONT = '"Segoe UI", Arial, sans-serif'
 const templates = [
   { id: 'polaroid', label: 'Полароид спомени', description: '3 снимки · припокриващи се кадри', photos: 3, icon: 'bi-images' },
   { id: 'birthday', label: 'Честит рожден ден!', description: '1 снимка · празнична картичка', photos: 1, field: 'age', icon: 'bi-balloon-heart' },
@@ -50,7 +50,11 @@ function text(context, value, x, y, maxWidth, lineHeight = 32, maxLines = 2) {
   })
   if (line) lines.push(line)
   const visible = lines.slice(0, maxLines)
-  if (lines.length > maxLines && visible.length) visible[visible.length - 1] = `${visible[visible.length - 1].slice(0, -2)}…`
+  if (lines.length > maxLines && visible.length) {
+    let last = visible[visible.length - 1]
+    while (last && context.measureText(`${last}…`).width > maxWidth) last = last.slice(0, -1).trim()
+    visible[visible.length - 1] = `${last}…`
+  }
   visible.forEach((lineValue, index) => context.fillText(lineValue, x, y + index * lineHeight))
 }
 
@@ -58,6 +62,31 @@ function fitFont(context, value, weight, maxSize, minSize, maxWidth, family = BO
   for (let size = maxSize; size >= minSize; size -= 2) {
     context.font = `${weight} ${size}px ${family}`
     if (context.measureText(String(value || '')).width <= maxWidth) return size
+  }
+  context.font = `${weight} ${minSize}px ${family}`
+  return minSize
+}
+
+function lineCount(context, value, maxWidth) {
+  const words = String(value || '').trim().split(/\s+/).filter(Boolean)
+  let lines = words.length ? 1 : 0
+  let line = ''
+  words.forEach((word) => {
+    const candidate = line ? `${line} ${word}` : word
+    if (context.measureText(candidate).width > maxWidth && line) {
+      lines += 1
+      line = word
+    } else {
+      line = candidate
+    }
+  })
+  return lines
+}
+
+function fitTextBlock(context, value, weight, maxSize, minSize, maxWidth, maxLines, family = BODY_FONT) {
+  for (let size = maxSize; size >= minSize; size -= 2) {
+    context.font = `${weight} ${size}px ${family}`
+    if (lineCount(context, value, maxWidth) <= maxLines) return size
   }
   context.font = `${weight} ${minSize}px ${family}`
   return minSize
@@ -87,11 +116,11 @@ function footer(context, petName, caption, color = '#243b35') {
   context.fillStyle = color
   context.textAlign = 'center'
   const headline = petName.trim() || 'Нашият любимец'
-  fitFont(context, headline, 700, 42, 28, 1060, DISPLAY_FONT)
-  text(context, headline, 600, 755, 1060, 44, 1)
+  fitFont(context, headline, 700, 44, 26, 1060, DISPLAY_FONT)
+  text(context, headline, 600, 748, 1060, 46, 1)
   const message = cleanCaption(caption, petName) || 'Спомени, създадени с любов'
-  fitFont(context, message, 400, 26, 18, 1060, BODY_FONT)
-  text(context, message, 600, 797, 1060, 28, 1)
+  fitTextBlock(context, message, 400, 25, 16, 1060, 2, BODY_FONT)
+  text(context, message, 600, 790, 1060, 30, 2)
 }
 
 function renderCanvas(canvas, photos, template, petName, caption, options) {
@@ -128,14 +157,15 @@ function renderCanvas(canvas, photos, template, petName, caption, options) {
     context.fillStyle = '#243b35'
     context.textAlign = 'center'
     const headline = petName.trim() || 'Нашият любимец'
-    fitFont(context, headline, 700, 48, 30, 1060, DISPLAY_FONT)
-    text(context, headline, 600, 660, 1060, 50, 1)
+    fitFont(context, headline, 700, 50, 28, 1060, DISPLAY_FONT)
+    text(context, headline, 600, 642, 1060, 52, 1)
     const message = cleanCaption(caption, petName) || 'Спомени, създадени с любов'
-    fitFont(context, message, 400, 27, 18, 1060, BODY_FONT)
-    text(context, message, 600, 705, 1060, 30, 1)
+    context.fillStyle = '#4f625b'
+    fitTextBlock(context, message, 400, 27, 17, 980, 2, BODY_FONT)
+    text(context, message, 600, 685, 980, 31, 2)
     context.fillStyle = '#6a7973'
-    context.font = `400 16px ${BODY_FONT}`
-    context.fillText('Pawly Moments', 600, 780)
+    context.font = `600 14px ${BODY_FONT}`
+    context.fillText('PAWLY MOMENTS', 600, 750)
   } else if (template === 'birthday') {
     context.fillStyle = '#f8ded2'
     context.fillRect(0, 0, width, height)
@@ -158,13 +188,13 @@ function renderCanvas(canvas, photos, template, petName, caption, options) {
     context.stroke()
     context.fillStyle = '#2e5548'
     context.textAlign = 'center'
-    context.font = `700 42px ${DISPLAY_FONT}`
+    context.font = `700 44px ${DISPLAY_FONT}`
     context.fillText('Честит рожден ден!', 600, 78)
     shadow(context, 18)
     photo(context, images[0], 275, 125, 650, 435, 28)
     resetShadow(context)
     context.fillStyle = '#2e5548'
-    context.font = `700 40px ${DISPLAY_FONT}`
+    context.font = `700 42px ${DISPLAY_FONT}`
     context.fillText(`${options.age || '...'} години`, 600, 635)
     footer(context, petName, caption)
   } else if (template === 'passport') {
@@ -184,24 +214,27 @@ function renderCanvas(canvas, photos, template, petName, caption, options) {
     context.fillStyle = '#243b35'
     context.textAlign = 'left'
     fitFont(context, petName.trim() || 'Любимец', 700, 48, 28, 500, DISPLAY_FONT)
-    text(context, petName.trim() || 'Любимец', 580, 280, 500, 54, 2)
-    context.font = `400 27px ${BODY_FONT}`
-    text(context, options.details || 'Най-добрият приятел на света', 580, 390, 490, 38, 4)
+    text(context, petName.trim() || 'Любимец', 580, 278, 500, 54, 2)
+    context.fillStyle = '#4f625b'
+    const details = options.details || 'Най-добрият приятел на света'
+    fitTextBlock(context, details, 400, 26, 18, 490, 3, BODY_FONT)
+    text(context, details, 580, 390, 490, 36, 3)
     context.fillStyle = '#dc8268'
     context.font = `700 23px ${DISPLAY_FONT}`
     context.fillText('STATUS: ОБИЧАН', 580, 590)
     context.fillStyle = '#6a7973'
     context.textAlign = 'center'
-    context.font = `400 22px ${BODY_FONT}`
-    text(context, cleanCaption(caption, petName) || 'Най-добрият ти приятел.', 600, 760, 1040, 28, 1)
-    context.font = `400 16px ${BODY_FONT}`
-    context.fillText('Pawly Moments', 600, 800)
+    const passportCaption = cleanCaption(caption, petName) || 'Най-добрият ти приятел.'
+    fitTextBlock(context, passportCaption, 400, 22, 16, 1040, 2, BODY_FONT)
+    text(context, passportCaption, 600, 748, 1040, 28, 2)
+    context.font = `600 14px ${BODY_FONT}`
+    context.fillText('PAWLY MOMENTS', 600, 800)
   } else if (template === 'then-now') {
     context.fillStyle = '#fffaf4'
     context.fillRect(0, 0, width, height)
     context.fillStyle = '#243b35'
     context.textAlign = 'center'
-    context.font = `700 48px ${DISPLAY_FONT}`
+    context.font = `700 50px ${DISPLAY_FONT}`
     context.fillText('Тогава и сега', 600, 78)
     context.fillStyle = '#6a7973'
     context.font = `400 22px ${BODY_FONT}`
@@ -211,7 +244,7 @@ function renderCanvas(canvas, photos, template, petName, caption, options) {
     photo(context, images[1] || images[0], 628, 165, 500, 470, 24)
     resetShadow(context)
     context.fillStyle = '#dc8268'
-    context.font = `700 28px ${DISPLAY_FONT}`
+    context.font = `700 30px ${DISPLAY_FONT}`
     context.fillText('ТОГАВА', 322, 690)
     context.fillText('СЕГА', 878, 690)
     footer(context, petName, caption)
@@ -235,8 +268,10 @@ function renderCanvas(canvas, photos, template, petName, caption, options) {
     fitFont(context, options.headline || 'Звездата на корицата', 700, 72, 36, 1020, DISPLAY_FONT)
     text(context, options.headline || 'Звездата на корицата', 90, 700, 1020, 78, 2)
     context.fillStyle = '#243b35'
-    context.font = `400 26px ${BODY_FONT}`
-    text(context, options.subheadline || caption || 'История с лапички и много любов.', 90, 790, 1020, 32, 1)
+    const coverCaption = cleanCaption(options.subheadline || caption || 'История с лапички и много любов.', petName)
+    context.fillStyle = '#243b35'
+    fitTextBlock(context, coverCaption, 400, 25, 17, 1020, 2, BODY_FONT)
+    text(context, coverCaption, 90, 790, 1020, 31, 2)
   } else if (template === 'adventure') {
     context.fillStyle = '#dce9df'
     context.fillRect(0, 0, width, height)
@@ -250,7 +285,7 @@ function renderCanvas(canvas, photos, template, petName, caption, options) {
     context.fill()
     context.fillStyle = '#243b35'
     context.textAlign = 'left'
-    context.font = `700 44px ${DISPLAY_FONT}`
+    context.font = `700 46px ${DISPLAY_FONT}`
     context.fillText('Малък приключенец', 72, 75)
     context.font = `400 20px ${BODY_FONT}`
     context.fillText('пътепис от Pawly Moments', 76, 108)
@@ -261,10 +296,12 @@ function renderCanvas(canvas, photos, template, petName, caption, options) {
     resetShadow(context)
     context.fillStyle = '#fffaf4'
     context.textAlign = 'center'
-    context.font = `700 30px ${DISPLAY_FONT}`
-    text(context, petName.trim() || 'Нов маршрут', 600, 760, 1000, 36, 1)
-    context.font = `400 22px ${BODY_FONT}`
-    text(context, cleanCaption(caption, petName) || 'Всеки път е по-хубав заедно.', 600, 805, 1000, 28, 1)
+    const adventureHeadline = petName.trim() || 'Нов маршрут'
+    fitFont(context, adventureHeadline, 700, 34, 24, 1000, DISPLAY_FONT)
+    text(context, adventureHeadline, 600, 752, 1000, 40, 1)
+    const adventureCaption = cleanCaption(caption, petName) || 'Всеки път е по-хубав заедно.'
+    fitTextBlock(context, adventureCaption, 400, 22, 16, 1000, 2, BODY_FONT)
+    text(context, adventureCaption, 600, 798, 1000, 28, 2)
   }
 }
 

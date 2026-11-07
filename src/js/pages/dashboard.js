@@ -25,16 +25,16 @@ function formatDate(value) {
 }
 
 function displayName(user) {
-  return user.user_metadata?.first_name || user.email?.split('@')[0] || 'приятелю'
+  return user.user_metadata?.first_name || user.email?.split('@')[0] || 'там'
 }
 
 function renderDashboard(container, user, pets, records) {
   const recentRecords = records.slice(0, 3)
   container.innerHTML = `
     <div class="mb-4">
-      <p class="pawly-eyebrow mb-2"><i class="bi bi-sparkle me-1" aria-hidden="true"></i>Добре дошли в Pawly</p>
-      <h1 class="pawly-title display-5 mb-2">Здравейте, ${escapeHtml(displayName(user))}!</h1>
-      <p class="pawly-subtitle mb-0">Всичко важно за грижата за любимците ви, подредено на едно място.</p>
+      <p class="pawly-eyebrow mb-2"><i class="bi bi-sparkle me-1" aria-hidden="true"></i>Добре дошъл в Pawly</p>
+      <h1 class="pawly-title display-5 mb-2">Здравей, ${escapeHtml(displayName(user))}!</h1>
+      <p class="pawly-subtitle mb-0">Всичко важно за грижата за любимците ти, подредено на едно място.</p>
     </div>
     <div class="alert d-none" data-page-status role="status"></div>
     <div class="row g-4 mb-4">
@@ -68,7 +68,7 @@ function renderDashboard(container, user, pets, records) {
             <div><strong>${escapeHtml(record.title)}</strong><p class="text-muted small mb-0">${escapeHtml(record.pets.name)} · ${recordTypeLabels[record.record_type]}</p></div>
             <time class="text-muted small text-nowrap datetime" datetime="${record.record_date}">${formatDate(record.record_date)}</time>
           </div>
-        </div>`).join('')}</div>` : '<p class="text-muted mb-0">Все още няма здравни записи. Добавете първия запис, за да започнете.</p>'}
+        </div>`).join('')}</div>` : '<p class="text-muted mb-0">Все още няма здравни записи. Добави първия запис, за да започнеш.</p>'}
     </section>`
 }
 
@@ -80,6 +80,6 @@ export async function renderDashboardPage() {
     const [pets, records] = await Promise.all([listPets(), listHealthRecords()])
     renderDashboard(container, user, pets, records)
   } catch (error) {
-    container.innerHTML = '<div class="alert alert-danger">Таблото не можа да бъде заредено. Моля, опитайте отново.</div>'
+    container.innerHTML = '<div class="alert alert-danger">Таблото не можа да бъде заредено. Моля, опитай отново.</div>'
   }
 }

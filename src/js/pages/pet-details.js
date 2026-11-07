@@ -33,6 +33,6 @@ export async function renderPetDetailsPage() {
         <a class="btn btn-primary mt-4" href="/pets.html?edit=${encodeURIComponent(pet.id)}">Редактиране</a>
       </article>`
   } catch (error) {
-    container.innerHTML = '<div class="alert alert-danger">Подробностите не можаха да бъдат заредени. Моля, опитайте отново.</div>'
+    container.innerHTML = '<div class="alert alert-danger">Подробностите не можаха да бъдат заредени. Моля, опитай отново.</div>'
   }
 }

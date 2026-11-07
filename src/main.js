@@ -11,6 +11,7 @@ import { renderProfilePage } from './js/pages/profile.js'
 import { renderAdminPage } from './js/pages/admin.js'
 import { renderPublicArticles } from './js/pages/home.js'
 import { renderArticlePage } from './js/pages/article.js'
+import { renderMomentsPage } from './js/pages/moments.js'
 import { isCurrentUserAdmin } from './js/services/authorization.js'
 import { getSupabaseClient } from './js/services/supabase.js'
 
@@ -26,6 +27,7 @@ const pageLabels = {
   Profile: 'Профил',
   Admin: 'Администрация',
   Article: 'Статия',
+  Moments: 'Pawly Moments',
 }
 const pageLabel = pageLabels[page] || pageLabels.Home
 
@@ -104,8 +106,9 @@ const homePageContent = `
         <article class="card pawly-card pawly-feature-card h-100">
           <div class="card-body p-4">
             <div class="pawly-icon-box pawly-icon-coral mb-4"><i class="bi bi-images" aria-hidden="true"></i></div>
-            <h3 class="h4 pawly-title mb-3">Спомени на сигурно място</h3>
-            <p class="text-muted mb-0">Събирайте любимите си снимки и превърнете профила на любимеца в малък дигитален албум.</p>
+            <h3 class="h4 pawly-title mb-3">Pawly Moments — Спомени, създадени с любов</h3>
+            <p class="text-muted mb-0">Превърнете любимите моменти с вашия домашен любимец в красиви колажи и персонализирани картички. Създайте, изтеглете и споделете!</p>
+            <a class="pawly-text-link d-inline-flex align-items-center gap-2 mt-3" href="/moments.html">Създайте момент <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
           </div>
         </article>
       </div>
@@ -168,6 +171,8 @@ const pageContent = page === 'Home'
       ? '<div data-admin></div>'
       : page === 'Article'
         ? '<div data-article-page></div>'
+        : page === 'Moments'
+          ? '<div data-moments></div>'
     : page === 'Pets'
   ? `
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
@@ -244,11 +249,13 @@ function renderNavigation(session, admin = false) {
       <a class="nav-link pawly-nav-link px-3" href="/dashboard.html">Табло</a>
       <a class="nav-link pawly-nav-link px-3" href="/pets.html">Моите любимци</a>
       <a class="nav-link pawly-nav-link px-3" href="/health-record.html">Здравни записи</a>
+      <a class="nav-link pawly-nav-link px-3" href="/moments.html">Pawly Moments</a>
       ${admin ? '<a class="nav-link pawly-nav-link px-3" href="/admin.html">Администрация</a>' : ''}
       <a class="nav-link pawly-nav-link px-3" href="/profile.html">Профил</a>`
     : `
       <a class="nav-link pawly-nav-link px-3" href="/index.html">Начало</a>
       <a class="nav-link pawly-nav-link px-3" href="/index.html#features">За Pawly</a>
+      <a class="nav-link pawly-nav-link px-3" href="/moments.html">Pawly Moments</a>
       <a class="nav-link pawly-nav-link px-3" href="/index.html#tips-title">Съвети</a>
       <a class="nav-link pawly-nav-link px-3" href="/login.html">Вход</a>`
 }
@@ -275,4 +282,5 @@ setupNavigation()
   if (page === 'Admin') renderAdminPage()
   if (page === 'Home') renderPublicArticles()
   if (page === 'Article') renderArticlePage()
+  if (page === 'Moments') renderMomentsPage()
 }

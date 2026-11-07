@@ -12,6 +12,7 @@ const pages = [
   'profile',
   'admin',
   'article',
+  'moments',
 ]
 
 export default defineConfig({

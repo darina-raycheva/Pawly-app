@@ -11,6 +11,7 @@ const pages = [
   'health-record',
   'profile',
   'admin',
+  'article',
 ]
 
 export default defineConfig({

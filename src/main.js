@@ -8,6 +8,10 @@ import { renderPetDetailsPage } from './js/pages/pet-details.js'
 import { renderHealthRecordsPage } from './js/pages/health-records.js'
 import { renderDashboardPage } from './js/pages/dashboard.js'
 import { renderProfilePage } from './js/pages/profile.js'
+import { renderAdminPage } from './js/pages/admin.js'
+import { renderPublicArticles } from './js/pages/home.js'
+import { renderArticlePage } from './js/pages/article.js'
+import { isCurrentUserAdmin } from './js/services/authorization.js'
 import { getSupabaseClient } from './js/services/supabase.js'
 
 const page = document.body.dataset.page || 'Home'
@@ -21,6 +25,7 @@ const pageLabels = {
   'Health Record': 'Здравни записи',
   Profile: 'Профил',
   Admin: 'Администрация',
+  Article: 'Статия',
 }
 const pageLabel = pageLabels[page] || pageLabels.Home
 
@@ -136,10 +141,8 @@ const homePageContent = `
       <div><p class="pawly-eyebrow mb-2">Полезно за вас</p><h2 id="tips-title" class="pawly-title display-6 mb-0">Малки идеи за голяма грижа</h2></div>
       <span class="text-muted">Съвети от Pawly</span>
     </div>
-    <div class="row g-4">
-      <div class="col-md-4 reveal"><article class="card pawly-card pawly-article-card h-100"><div class="pawly-article-image pawly-article-image-one"><i class="bi bi-balloon-heart" aria-hidden="true"></i></div><div class="card-body p-4"><p class="pawly-article-meta mb-2">Ежедневна грижа</p><h3 class="h5 pawly-title">Как да създадете спокоен дневен ритъм</h3><p class="text-muted small mb-0">Няколко малки навика, които помагат на любимеца да се чувства сигурен.</p></div></article></div>
-      <div class="col-md-4 reveal"><article class="card pawly-card pawly-article-card h-100"><div class="pawly-article-image pawly-article-image-two"><i class="bi bi-sun" aria-hidden="true"></i></div><div class="card-body p-4"><p class="pawly-article-meta mb-2">Здраве</p><h3 class="h5 pawly-title">Подготовка за следващия преглед</h3><p class="text-muted small mb-0">Какво да запишете предварително, за да бъде посещението по-полезно.</p></div></article></div>
-      <div class="col-md-4 reveal"><article class="card pawly-card pawly-article-card h-100"><div class="pawly-article-image pawly-article-image-three"><i class="bi bi-camera" aria-hidden="true"></i></div><div class="card-body p-4"><p class="pawly-article-meta mb-2">Спомени</p><h3 class="h5 pawly-title">Идеи за снимки, които ще обичате</h3><p class="text-muted small mb-0">Уловете характера на своя любимец в най-естествените му моменти.</p></div></article></div>
+    <div class="row g-4" data-public-articles>
+      <div class="col-12"><div class="pawly-placeholder py-5"><div><div class="pawly-placeholder-icon mb-3"><i class="bi bi-hourglass-split" aria-hidden="true"></i></div><p class="text-muted mb-0">Зареждаме полезните статии…</p></div></div></div>
     </div>
   </section>
 
@@ -161,6 +164,10 @@ const pageContent = page === 'Home'
   ? '<div data-dashboard></div>'
   : page === 'Profile'
     ? '<div data-profile></div>'
+    : page === 'Admin'
+      ? '<div data-admin></div>'
+      : page === 'Article'
+        ? '<div data-article-page></div>'
     : page === 'Pets'
   ? `
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
@@ -209,7 +216,26 @@ document.querySelector('#app').innerHTML = `
   </main>
 `
 
-function renderNavigation(session) {
+async function setupNavigation() {
+  try {
+    const supabase = getSupabaseClient()
+    const { data, error } = await supabase.auth.getSession()
+    if (error) throw error
+    let admin = false
+    if (data.session?.user) {
+      admin = await isCurrentUserAdmin(data.session.user.id)
+    }
+    renderNavigation(data.session, admin)
+    supabase.auth.onAuthStateChange(async (_event, session) => {
+      const sessionIsAdmin = session?.user ? await isCurrentUserAdmin(session.user.id) : false
+      renderNavigation(session, sessionIsAdmin)
+    })
+  } catch (error) {
+    renderNavigation(null)
+  }
+}
+
+function renderNavigation(session, admin = false) {
   const navigation = document.querySelector('[data-session-navigation]')
   if (!navigation) return
 
@@ -218,24 +244,13 @@ function renderNavigation(session) {
       <a class="nav-link pawly-nav-link px-3" href="/dashboard.html">Табло</a>
       <a class="nav-link pawly-nav-link px-3" href="/pets.html">Моите любимци</a>
       <a class="nav-link pawly-nav-link px-3" href="/health-record.html">Здравни записи</a>
+      ${admin ? '<a class="nav-link pawly-nav-link px-3" href="/admin.html">Администрация</a>' : ''}
       <a class="nav-link pawly-nav-link px-3" href="/profile.html">Профил</a>`
     : `
       <a class="nav-link pawly-nav-link px-3" href="/index.html">Начало</a>
       <a class="nav-link pawly-nav-link px-3" href="/index.html#features">За Pawly</a>
       <a class="nav-link pawly-nav-link px-3" href="/index.html#tips-title">Съвети</a>
       <a class="nav-link pawly-nav-link px-3" href="/login.html">Вход</a>`
-}
-
-async function setupNavigation() {
-  try {
-    const supabase = getSupabaseClient()
-    const { data, error } = await supabase.auth.getSession()
-    if (error) throw error
-    renderNavigation(data.session)
-    supabase.auth.onAuthStateChange((_event, session) => renderNavigation(session))
-  } catch (error) {
-    renderNavigation(null)
-  }
 }
 
 setupNavigation()
@@ -257,4 +272,7 @@ setupNavigation()
   if (page === 'Health Record') renderHealthRecordsPage()
   if (page === 'Dashboard') renderDashboardPage()
   if (page === 'Profile') renderProfilePage()
+  if (page === 'Admin') renderAdminPage()
+  if (page === 'Home') renderPublicArticles()
+  if (page === 'Article') renderArticlePage()
 }

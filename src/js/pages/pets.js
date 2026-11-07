@@ -1,6 +1,7 @@
 import { requireUser } from '../services/auth.js'
 import { createPet, deletePet, getPetPhotoUrl, listPets, updatePet, uploadPetPhoto } from '../services/pets.js'
 import { fillPetForm, readPetForm } from '../utils/pet-validation.js'
+import { Dropdown } from 'bootstrap'
 
 const sexLabels = { male: 'Мъжки', female: 'Женски', unknown: 'Не е посочен' }
 
@@ -76,14 +77,21 @@ function renderPets(container, pets) {
   }
   container.innerHTML = `<div class="row g-4">${pets.map((pet) => `
     <div class="col-12 col-md-6">
-      <article class="card pawly-card h-100 p-4">
+      <article class="card pawly-card h-100 p-4 pawly-pet-card" data-pet-card="${pet.id}" tabindex="0" role="link" aria-label="Преглед на ${pet.name}">
         <div class="d-flex justify-content-between gap-3">
           <div>${pet.photoUrl ? `<img class="pawly-pet-photo mb-3" src="${pet.photoUrl}" alt="Снимка на ${pet.name}" />` : '<div class="pawly-placeholder-icon mb-3"><i class="bi bi-paw-fill" aria-hidden="true"></i></div>'}<h2 class="h4 pawly-title mb-1">${pet.name}</h2><p class="text-muted mb-0">${formatPetDetails(pet)}</p></div>
-          <div class="dropdown"><button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="dropdown" aria-label="Действия за ${pet.name}"><i class="bi bi-three-dots-vertical" aria-hidden="true"></i></button><ul class="dropdown-menu dropdown-menu-end"><li><a class="dropdown-item" href="/pet-details.html?id=${encodeURIComponent(pet.id)}">Преглед</a></li><li><button class="dropdown-item" type="button" data-edit-pet="${pet.id}">Редактиране</button></li><li><button class="dropdown-item text-danger" type="button" data-delete-pet="${pet.id}">Изтриване</button></li></ul></div>
+          <div class="dropdown"><button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="dropdown" aria-label="Действия за ${pet.name}"><i class="bi bi-three-dots-vertical" aria-hidden="true"></i></button><ul class="dropdown-menu dropdown-menu-end"><li><a class="dropdown-item" href="/pet-details.html?id=${encodeURIComponent(pet.id)}">Преглед</a></li><li><button class="dropdown-item" type="button" data-edit-pet="${pet.id}">Редактирай</button></li><li><button class="dropdown-item text-danger" type="button" data-delete-pet="${pet.id}">Изтрий</button></li></ul></div>
         </div>
         ${pet.weight ? `<p class="small text-muted mt-3 mb-0"><i class="bi bi-speedometer2 me-1" aria-hidden="true"></i>${pet.weight} кг</p>` : ''}
       </article>
     </div>`).join('')}</div>`
+  container.querySelectorAll('[data-bs-toggle="dropdown"]').forEach((toggle) => {
+    const dropdown = Dropdown.getOrCreateInstance(toggle)
+    toggle.addEventListener('click', (event) => {
+      event.stopPropagation()
+      dropdown.toggle()
+    })
+  })
 }
 
 function setStatus(element, type, message) {
@@ -157,10 +165,19 @@ export async function renderPetsPage() {
   listContainer.addEventListener('click', (event) => {
     const editButton = event.target.closest('[data-edit-pet]')
     const deleteButton = event.target.closest('[data-delete-pet]')
+    const petCard = event.target.closest('[data-pet-card]')
     if (editButton) openForm(pets.find((pet) => pet.id === editButton.dataset.editPet))
     if (deleteButton && window.confirm('Искаш ли да изтриеш този любимец?')) {
       deletePet(deleteButton.dataset.deletePet).then(load).then(() => setStatus(document.querySelector('[data-page-status]'), 'success', 'Любимецът е изтрит.')).catch(() => setStatus(document.querySelector('[data-page-status]'), 'danger', 'Любимецът не можа да бъде изтрит.'))
     }
+    if (petCard && !event.target.closest('.dropdown')) window.location.assign(`/pet-details.html?id=${encodeURIComponent(petCard.dataset.petCard)}`)
+  })
+  listContainer.addEventListener('keydown', (event) => {
+    if (!['Enter', ' '].includes(event.key) || event.target.closest('.dropdown')) return
+    const petCard = event.target.closest('[data-pet-card]')
+    if (!petCard) return
+    event.preventDefault()
+    window.location.assign(`/pet-details.html?id=${encodeURIComponent(petCard.dataset.petCard)}`)
   })
   try {
     user = await userPromise

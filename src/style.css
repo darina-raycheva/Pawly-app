@@ -45,6 +45,10 @@ body {
   backdrop-filter: blur(0.75rem);
 }
 
+#tips-title {
+  scroll-margin-top: 6rem;
+}
+
 .pawly-brand {
   color: var(--pawly-sage-dark);
   font-size: 1.3rem;
@@ -660,7 +664,7 @@ body {
 }
 
 .pawly-home {
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .pawly-home > .row > .col-12 {

@@ -2,9 +2,9 @@ import { getSupabaseClient } from '../services/supabase.js'
 
 const authPageContent = {
   Login: {
-    eyebrow: 'Добре дошли обратно',
-    title: 'Влезте в Pawly',
-    subtitle: 'Продължете да се грижите за любимеца си с лекота.',
+    eyebrow: 'Добре дошъл отново',
+    title: 'Влез в Pawly',
+    subtitle: 'Продължи да се грижиш за любимеца си с лекота.',
     submitLabel: 'Вход',
     alternateText: 'Нямаш профил?',
     alternateLink: 'Регистрация',
@@ -15,7 +15,7 @@ const authPageContent = {
     title: 'Създай Pawly профил',
     subtitle: 'Организирай грижите за любимеца си на едно място.',
     submitLabel: 'Регистрация',
-    alternateText: 'Вече имате профил?',
+    alternateText: 'Вече имаш профил?',
     alternateLink: 'Вход',
     alternateHref: '/login.html',
   },
@@ -27,7 +27,7 @@ function renderLoginForm() {
       <label class="form-label" for="email">Имейл</label>
       <input class="form-control" id="email" name="email" type="email" autocomplete="email"
         placeholder="имейл@пример.bg" required />
-      <div class="invalid-feedback">Моля, въведете валиден имейл адрес.</div>
+      <div class="invalid-feedback">Моля, въведи валиден имейл адрес.</div>
     </div>
     <div class="mb-3">
       <label class="form-label" for="password">Парола</label>
@@ -52,20 +52,20 @@ function renderRegisterForm() {
         <label class="form-label" for="first-name">Име</label>
         <input class="form-control" id="first-name" name="firstName" type="text"
           autocomplete="given-name" required />
-        <div class="invalid-feedback">Моля, въведете име.</div>
+        <div class="invalid-feedback">Моля, въведи име.</div>
       </div>
       <div class="col-sm-6">
         <label class="form-label" for="last-name">Фамилия</label>
         <input class="form-control" id="last-name" name="lastName" type="text"
           autocomplete="family-name" required />
-        <div class="invalid-feedback">Моля, въведете фамилия.</div>
+        <div class="invalid-feedback">Моля, въведи фамилия.</div>
       </div>
     </div>
     <div class="mb-3">
       <label class="form-label" for="email">Имейл</label>
       <input class="form-control" id="email" name="email" type="email" autocomplete="email"
         placeholder="имейл@пример.bg" required />
-      <div class="invalid-feedback">Моля, въведете валиден имейл адрес.</div>
+      <div class="invalid-feedback">Моля, въведи валиден имейл адрес.</div>
     </div>
     <div class="mb-3">
       <label class="form-label" for="password">Парола</label>
@@ -107,9 +107,15 @@ function setFormStatus(status, type, message) {
   status.textContent = message
 }
 
+function setEmailConfirmationStatus(status) {
+  status.classList.remove('d-none', 'alert-danger')
+  status.classList.add('alert-success')
+  status.innerHTML = 'Профилът ти е създаден успешно! Провери имейла си, за да потвърдиш регистрацията. <a class="alert-link" href="/login.html">Влез в профила си</a>.'
+}
+
 function getAuthErrorMessage(error, page) {
   if (error.message === 'Липсва конфигурация за Supabase.') {
-    return 'Автентикацията не е конфигурирана. Моля, свържете се с администратор.'
+    return 'Автентикацията не е конфигурирана. Моля, свържи се с администратор.'
   }
 
   if (page === 'Login' && error.message === 'Invalid login credentials') {
@@ -166,13 +172,18 @@ async function submitAuthForm(form, page) {
       throw error
     }
 
-    setFormStatus(
-      status,
-      'success',
-      data.session
-        ? 'Регистрацията е успешна. Добре дошли в Pawly!'
-        : 'Регистрацията е успешна. Провери имейла си, за да потвърдиш профила си.',
-    )
+    const { data: sessionData, error: sessionError } = await supabase.auth.getSession()
+    if (sessionError) throw sessionError
+
+    if (data.session && sessionData.session) {
+      const { data: userData, error: userError } = await supabase.auth.getUser()
+      if (userError) throw userError
+      if (!userData.user) throw new Error('Липсва активен потребител след регистрация.')
+      window.location.assign('/dashboard.html')
+      return
+    }
+
+    setEmailConfirmationStatus(status)
     form.reset()
     form.classList.remove('was-validated')
   } catch (error) {
@@ -226,7 +237,10 @@ export function renderAuthPage(page) {
       <div class="container py-4 py-sm-5">
         <div class="pawly-auth-brand text-center mb-4">
           <a class="pawly-brand" href="/index.html">
-            <i class="bi bi-heart-fill me-2" aria-hidden="true"></i>Pawly
+            <span class="pawly-logo-paw" aria-hidden="true">
+              <svg viewBox="4 2 24 22" focusable="false"><path d="M10.2 14.2c-2.2 1.1-4.9-.2-5.3-2.6-.4-2.2 1.1-4.2 3.2-4.5 2.3-.3 4.1 1.7 3.8 4-.2 1.4-.8 2.5-1.7 3.1Zm11.6 0c2.2 1.1 4.9-.2 5.3-2.6 2.2-2.2-3.2-4.5-3.2-4.5-2.3-.3-4.1 1.7-3.8 4 .2 1.4.8 2.5 1.7 3.1ZM15 10.2c-2 .2-3.7-1.5-3.7-3.6S12.7 2.8 14.7 3c1.9.2 3.1 2.1 2.8 4-.3 1.7-1.1 2.9-2.5 3.2Zm2 0c2 .2 3.7-1.5 3.7-3.6S19.3 2.8 17.3 3c-1.9.2-3.1 2.1-2.8 4-.3 1.7-1.1 2.9-2.5 3.2ZM16 12c-3.7 0-7.3 3.5-7.3 7.3 0 2.5 1.8 4.1 4.2 3.7 1.2-.2 2.1-.8 3.1-.8s1.9.6 3.1.8c2.4.4 4.2-1.2 4.2-3.7C23.3 15.5 19.7 12 16 12Z"/></svg>
+            </span>
+            <span class="pawly-logo-word">Pawly</span>
           </a>
         </div>
         <div class="row justify-content-center">

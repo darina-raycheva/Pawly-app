@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+import { Modal } from 'bootstrap'
 import './style.css'
 import { renderAuthPage } from './js/pages/auth.js'
 import { renderPetsPage } from './js/pages/pets.js'
@@ -110,7 +111,7 @@ const homePageContent = `
             <div class="pawly-icon-box pawly-icon-coral mb-4"><i class="bi bi-images" aria-hidden="true"></i></div>
             <h3 class="h4 pawly-title mb-3">Pawly Moments — Спомени, създадени с любов</h3>
             <p class="text-muted mb-0">Превърни любимите си снимки в красиви колажи и персонализирани картички.</p>
-            <a class="pawly-text-link d-inline-flex align-items-center gap-2 mt-3" href="/moments.html">Създай момент <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+            <a class="pawly-text-link d-inline-flex align-items-center gap-2 mt-3" href="/moments.html" data-moments-cta>Създай момент <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
           </div>
         </article>
       </div>
@@ -254,6 +255,45 @@ document.querySelector('#app').innerHTML = `
   </main>
 `
 
+if (page === 'Home') {
+  const momentsCta = document.querySelector('[data-moments-cta]')
+  const momentsModal = document.createElement('div')
+  momentsModal.innerHTML = `
+    <div class="modal fade" id="momentsAuthModal" tabindex="-1" aria-labelledby="momentsAuthModalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content pawly-card">
+          <div class="modal-header border-0">
+            <h2 class="modal-title h4 pawly-title" id="momentsAuthModalTitle">Създай своя Pawly профил</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Затвори"></button>
+          </div>
+          <div class="modal-body pt-0">
+            <p class="text-muted mb-4">Създай своя Pawly профил, за да превърнеш любимите си снимки в красиви спомени.</p>
+            <div class="d-flex flex-column gap-2">
+              <a class="btn btn-primary" href="/register.html">Създай профил</a>
+              <a class="btn btn-outline-secondary" href="/login.html">Влез в профила си</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`
+  document.body.append(momentsModal.firstElementChild)
+  const modal = Modal.getOrCreateInstance(document.querySelector('#momentsAuthModal'))
+  momentsCta?.addEventListener('click', async (event) => {
+    event.preventDefault()
+    try {
+      const { data, error } = await getSupabaseClient().auth.getSession()
+      if (error) throw error
+      if (data.session) {
+        window.location.assign('/moments.html')
+      } else {
+        modal.show()
+      }
+    } catch (error) {
+      modal.show()
+    }
+  })
+}
+
 async function setupNavigation() {
   try {
     const supabase = getSupabaseClient()
@@ -288,7 +328,6 @@ function renderNavigation(session, admin = false) {
     : `
       <a class="nav-link pawly-nav-link px-3" href="/index.html">Начало</a>
       <a class="nav-link pawly-nav-link px-3" href="/index.html#features">За Pawly</a>
-      <a class="nav-link pawly-nav-link px-3" href="/moments.html">Pawly Moments</a>
       <a class="nav-link pawly-nav-link px-3" href="/demo.html">Демо</a>
       <a class="nav-link pawly-nav-link px-3" href="/index.html#tips-title">Съвети</a>
       <a class="nav-link pawly-nav-link px-3" href="/login.html">Вход</a>`

@@ -1,19 +1,20 @@
 :root {
   --pawly-cream: #fffaf4;
-  --pawly-sand: #f4eadf;
+  --pawly-sand: #f6ecde;
   --pawly-sage: #dce9df;
-  --pawly-sage-dark: #356052;
-  --pawly-teal: #287c78;
-  --pawly-teal-dark: #1d5e5b;
-  --pawly-coral: #e8876b;
-  --pawly-ink: #263b3b;
-  --pawly-muted: #6b7b7a;
-  --pawly-border: #e6ddd3;
+  --pawly-sage-dark: #2e5548;
+  --pawly-teal: #286c5d;
+  --pawly-teal-dark: #1d493f;
+  --pawly-coral: #dc8268;
+  --pawly-peach: #f8ded2;
+  --pawly-ink: #243b35;
+  --pawly-muted: #6a7973;
+  --pawly-border: #e9ded1;
   --bs-primary: var(--pawly-teal);
-  --bs-primary-rgb: 40, 124, 120;
+  --bs-primary-rgb: 40, 108, 93;
   --bs-body-color: var(--pawly-ink);
   --bs-body-bg: var(--pawly-cream);
-  font-family: "Nunito", "Segoe UI", sans-serif;
+  font-family: "Nunito", "Avenir Next", "Segoe UI", sans-serif;
   color: var(--pawly-ink);
   background-color: var(--pawly-cream);
   font-synthesis: none;
@@ -29,7 +30,8 @@ body {
   min-height: 100vh;
   margin: 0;
   background:
-    radial-gradient(circle at 100% 0, rgba(220, 233, 223, 0.6), transparent 30rem),
+    radial-gradient(circle at 100% 0, rgba(220, 233, 223, 0.7), transparent 30rem),
+    radial-gradient(circle at 0 42%, rgba(248, 222, 210, 0.32), transparent 24rem),
     var(--pawly-cream);
 }
 
@@ -38,16 +40,16 @@ body {
 }
 
 .pawly-navbar {
-  border-bottom: 1px solid rgba(230, 221, 211, 0.8);
-  background-color: rgba(255, 250, 244, 0.94);
+  border-bottom: 1px solid rgba(233, 222, 209, 0.8);
+  background-color: rgba(255, 250, 244, 0.88);
   backdrop-filter: blur(0.75rem);
 }
 
 .pawly-brand {
   color: var(--pawly-sage-dark);
-  font-size: 1.35rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.035em;
 }
 
 .pawly-brand:hover,
@@ -55,8 +57,36 @@ body {
   color: var(--pawly-teal-dark);
 }
 
-.pawly-brand .bi {
+.pawly-logo-paw {
+  display: inline-block;
+  flex: 0 0 28px;
   color: var(--pawly-coral);
+  width: 28px;
+  height: 28px;
+  transition: transform 180ms ease, color 180ms ease;
+}
+
+.pawly-logo-paw svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.pawly-logo-word {
+  vertical-align: middle;
+}
+
+.navbar .pawly-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pawly-brand:hover .pawly-logo-paw,
+.pawly-brand:focus .pawly-logo-paw {
+  color: var(--pawly-teal);
+  transform: translateY(-0.1rem) scale(1.08);
 }
 
 .pawly-nav-link {
@@ -86,10 +116,16 @@ body {
   text-transform: uppercase;
 }
 
+.pawly-hero .pawly-eyebrow {
+  letter-spacing: 0.04em;
+}
+
 .pawly-title {
   color: var(--pawly-ink);
-  font-weight: 800;
-  letter-spacing: -0.04em;
+  font-family: "Avenir Next", "Trebuchet MS", "Segoe UI", sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1.08;
 }
 
 .pawly-subtitle {
@@ -99,9 +135,9 @@ body {
 
 .pawly-card {
   border: 1px solid var(--pawly-border);
-  border-radius: 1.25rem;
+  border-radius: 1.5rem;
   background-color: rgba(255, 255, 255, 0.78);
-  box-shadow: 0 0.75rem 2rem rgba(63, 53, 42, 0.06);
+  box-shadow: 0 1rem 2.5rem rgba(63, 53, 42, 0.07);
 }
 
 .pawly-card-header {
@@ -138,9 +174,16 @@ body {
 }
 
 .btn {
-  border-radius: 0.75rem;
-  font-weight: 800;
+  border-radius: 0.85rem;
+  font-weight: 700;
   padding: 0.7rem 1rem;
+  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+}
+
+.btn:hover,
+.btn:focus-visible {
+  transform: translateY(-0.12rem);
+  box-shadow: 0 0.55rem 1.2rem rgba(29, 73, 63, 0.16);
 }
 
 .btn-primary {
@@ -228,6 +271,251 @@ body {
   border-radius: 0.75rem;
 }
 
+.pawly-home {
+  overflow: hidden;
+}
+
+.pawly-home > .row > .col-12 {
+  width: 100%;
+}
+
+.pawly-hero,
+.pawly-home section:not(.pawly-hero) {
+  max-width: 72rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pawly-hero {
+  min-height: 38rem;
+  display: flex;
+  align-items: center;
+  padding: 5rem 1rem 4rem;
+}
+
+.pawly-accent {
+  color: var(--pawly-coral);
+}
+
+.pawly-section-intro {
+  max-width: 36rem;
+}
+
+.pawly-trust-list {
+  color: var(--pawly-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.pawly-trust-list .bi {
+  color: var(--pawly-teal);
+}
+
+.pawly-hero-visual {
+  position: relative;
+  min-height: 24rem;
+  display: grid;
+  place-items: center;
+  border-radius: 45% 45% 42% 42%;
+  background: linear-gradient(145deg, var(--pawly-sage), #f7e9d8);
+  isolation: isolate;
+}
+
+.pawly-hero-visual::after {
+  position: absolute;
+  inset: 12% 10%;
+  border: 1px dashed rgba(53, 96, 82, 0.2);
+  border-radius: 50%;
+  content: "";
+}
+
+.pawly-hero-paw {
+  z-index: 1;
+  width: 9rem;
+  height: 9rem;
+  display: grid;
+  place-items: center;
+  border-radius: 2.5rem;
+  background-color: var(--pawly-teal);
+  box-shadow: 0 1.5rem 3rem rgba(29, 94, 91, 0.2);
+  color: #fff;
+  font-size: 5rem;
+  transform: rotate(-12deg);
+  animation: pawly-float 5s ease-in-out infinite;
+}
+
+.pawly-hero-orbit {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.65);
+}
+
+.pawly-orbit-one {
+  width: 3rem;
+  height: 3rem;
+  top: 18%;
+  left: 18%;
+}
+
+.pawly-orbit-two {
+  width: 1.5rem;
+  height: 1.5rem;
+  right: 18%;
+  bottom: 20%;
+}
+
+.pawly-hero-note {
+  z-index: 2;
+  position: absolute;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid rgba(230, 221, 211, 0.8);
+  border-radius: 0.8rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0.75rem 1.5rem rgba(63, 53, 42, 0.08);
+  color: var(--pawly-ink);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.pawly-hero-note .bi {
+  color: var(--pawly-coral);
+}
+
+.pawly-note-top {
+  top: 22%;
+  right: 9%;
+}
+
+.pawly-note-bottom {
+  bottom: 20%;
+  left: 8%;
+}
+
+.pawly-icon-box {
+  width: 3.5rem;
+  height: 3.5rem;
+  display: grid;
+  place-items: center;
+  border-radius: 1.1rem;
+  font-size: 1.45rem;
+}
+
+.pawly-icon-sage {
+  background-color: var(--pawly-sage);
+  color: var(--pawly-teal-dark);
+}
+
+.pawly-icon-coral {
+  background-color: #fae1d8;
+  color: #bd624a;
+}
+
+.pawly-icon-sand {
+  background-color: var(--pawly-sand);
+  color: #947044;
+}
+
+.pawly-feature-card,
+.pawly-article-card {
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.pawly-feature-card:hover,
+.pawly-feature-card:focus-within,
+.pawly-article-card:hover,
+.pawly-article-card:focus-within {
+  transform: translateY(-0.4rem);
+  box-shadow: 0 1.25rem 2.5rem rgba(63, 53, 42, 0.1);
+}
+
+.pawly-why-section {
+  border-radius: 2rem;
+  background-color: var(--pawly-sage);
+}
+
+.pawly-step-number {
+  flex: 0 0 2.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.72);
+  color: var(--pawly-teal-dark);
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+
+.pawly-article-image {
+  min-height: 10rem;
+  display: grid;
+  place-items: center;
+  font-size: 2.5rem;
+}
+
+.pawly-article-image-one {
+  background-color: #f9ded4;
+  color: #bf6d55;
+}
+
+.pawly-article-image-two {
+  background-color: #f5ead4;
+  color: #9c7847;
+}
+
+.pawly-article-image-three {
+  background-color: #dcebe1;
+  color: var(--pawly-teal-dark);
+}
+
+.pawly-article-meta {
+  color: var(--pawly-teal);
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pawly-cta {
+  padding: 4rem 1.5rem;
+  border-radius: 2rem;
+  background: linear-gradient(135deg, #f8e3d8, #f5ead9);
+}
+
+.pawly-cta-paw {
+  margin-bottom: 1rem;
+  color: var(--pawly-coral);
+  font-size: 2rem;
+  animation: pawly-wiggle 4s ease-in-out infinite;
+}
+
+.pawly-footer {
+  border-top: 1px solid var(--pawly-border);
+  background-color: rgba(255, 255, 255, 0.35);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(1rem);
+  transition: opacity 600ms ease, transform 600ms ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes pawly-float {
+  0%, 100% { transform: rotate(-12deg) translateY(0); }
+  50% { transform: rotate(-8deg) translateY(-0.5rem); }
+}
+
+@keyframes pawly-wiggle {
+  0%, 80%, 100% { transform: rotate(0); }
+  85% { transform: rotate(-8deg); }
+  90% { transform: rotate(8deg); }
+}
+
 @media (min-width: 768px) {
   .pawly-page {
     padding-top: 3.5rem;
@@ -236,5 +524,480 @@ body {
 
   .pawly-auth-page {
     align-items: center;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .navbar .pawly-logo-paw {
+    flex-basis: 24px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .pawly-hero {
+    min-height: auto;
+    padding-top: 3.5rem;
+  }
+
+  .pawly-hero .display-3 {
+    font-size: clamp(2.35rem, 6vw, 3.15rem);
+    line-height: 1.08;
+  }
+
+  .pawly-hero-visual {
+    min-height: 20rem;
+  }
+
+  .pawly-hero-card-vaccine {
+    right: -0.5rem;
+  }
+
+  .pawly-hero-card-health {
+    left: -0.5rem;
+  }
+
+  .pawly-hero-card-photos {
+    right: 0.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.pawly-home > .row > .col-12 {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.pawly-hero {
+  position: relative;
+  min-height: 32rem;
+  padding-top: 2.75rem;
+  padding-bottom: 2.5rem;
+}
+
+.pawly-hero::before {
+  position: absolute;
+  z-index: -1;
+  top: 2rem;
+  right: -14rem;
+  width: 30rem;
+  height: 30rem;
+  border: 1px solid rgba(220, 233, 223, 0.8);
+  border-radius: 48% 52% 62% 38%;
+  content: "";
+  transform: rotate(22deg);
+}
+
+.pawly-hero .display-3 {
+  max-width: 36rem;
+  font-family: "Inter", "Manrope", "Segoe UI", sans-serif;
+  font-size: clamp(2.15rem, 3.4vw, 3.15rem);
+  font-weight: 650;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+
+.pawly-hero .display-3 > span {
+  display: block;
+}
+
+.pawly-hero-visual {
+  min-height: 24rem;
+  overflow: visible;
+  border-radius: 42% 58% 48% 52%;
+  background:
+    radial-gradient(circle at 23% 22%, rgba(255, 255, 255, 0.85) 0 0.4rem, transparent 0.45rem),
+    radial-gradient(circle at 76% 75%, rgba(255, 255, 255, 0.8) 0 0.25rem, transparent 0.3rem),
+    linear-gradient(145deg, #dcebe1 0%, #f8eadc 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7), 0 1.6rem 3rem rgba(63, 53, 42, 0.08);
+}
+
+.pawly-hero-visual::before,
+.pawly-hero-visual::after {
+  position: absolute;
+  border-radius: 50%;
+  content: "";
+}
+
+.pawly-hero-visual::before {
+  top: 13%;
+  left: 16%;
+  width: 3.8rem;
+  height: 3.8rem;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.pawly-hero-visual::after {
+  right: 13%;
+  bottom: 14%;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 0;
+  background: rgba(220, 108, 81, 0.32);
+}
+
+.pawly-hero-shape {
+  position: absolute;
+  border: 1px solid rgba(46, 85, 72, 0.16);
+  border-radius: 50%;
+  transform: rotate(-15deg);
+}
+
+.pawly-hero-shape-one {
+  inset: 9% 12%;
+}
+
+.pawly-hero-shape-two {
+  inset: 18% 21%;
+  border-style: dashed;
+}
+
+.pawly-pet-portrait {
+  position: relative;
+  z-index: 1;
+  width: 13rem;
+  height: 13rem;
+  display: grid;
+  place-items: center;
+  border: 0.8rem solid rgba(255, 255, 255, 0.78);
+  border-radius: 45% 55% 52% 48%;
+  background: #d78c68;
+  box-shadow: 0 1.6rem 2.5rem rgba(63, 53, 42, 0.18);
+  transform: rotate(-5deg);
+  animation: pawly-pet-breathe 5s ease-in-out infinite;
+}
+
+.pawly-pet-face {
+  position: relative;
+  width: 8.5rem;
+  height: 8rem;
+  border-radius: 48% 48% 45% 45%;
+  background: #f0bf91;
+}
+
+.pawly-pet-ear {
+  position: absolute;
+  z-index: -1;
+  top: 1.5rem;
+  width: 4rem;
+  height: 5rem;
+  border-radius: 60% 40% 45% 55%;
+  background: #b96e55;
+}
+
+.pawly-pet-ear-left {
+  left: 0.2rem;
+  transform: rotate(22deg);
+}
+
+.pawly-pet-ear-right {
+  right: 0.2rem;
+  transform: rotate(-22deg);
+}
+
+.pawly-pet-eye {
+  position: absolute;
+  top: 2.8rem;
+  width: 0.7rem;
+  height: 0.95rem;
+  border-radius: 50%;
+  background: var(--pawly-ink);
+}
+
+.pawly-pet-eye-left {
+  left: 2rem;
+}
+
+.pawly-pet-eye-right {
+  right: 2rem;
+}
+
+.pawly-pet-muzzle {
+  position: absolute;
+  right: 50%;
+  bottom: 1.3rem;
+  width: 2.3rem;
+  height: 1.7rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #f9d5bd;
+  color: #a75949;
+  font-size: 0.7rem;
+  transform: translateX(50%);
+}
+
+.pawly-hero-card {
+  position: absolute;
+  z-index: 2;
+  border: 1px solid rgba(233, 222, 209, 0.9);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.93);
+  box-shadow: 0 1rem 2rem rgba(63, 53, 42, 0.12);
+  color: var(--pawly-ink);
+  animation: pawly-card-float 6s ease-in-out infinite;
+}
+
+.pawly-hero-card-vaccine {
+  top: 7%;
+  right: 3%;
+  width: 12.5rem;
+  padding: 0.85rem;
+}
+
+.pawly-hero-card-health {
+  bottom: 15%;
+  left: 0;
+  padding: 0.75rem 0.9rem;
+  animation-delay: -1.6s;
+}
+
+.pawly-hero-card-photos {
+  right: 4%;
+  bottom: 6%;
+  padding: 0.65rem 0.8rem;
+  animation-delay: -3.2s;
+}
+
+.pawly-mini-icon {
+  width: 2rem;
+  height: 2rem;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 0.65rem;
+}
+
+.pawly-mini-icon-coral {
+  background: var(--pawly-peach);
+  color: #b85e4b;
+}
+
+.pawly-mini-icon-sage {
+  background: var(--pawly-sage);
+  color: var(--pawly-teal-dark);
+}
+
+.pawly-mini-icon-sand {
+  background: var(--pawly-sand);
+  color: #947044;
+}
+
+.pawly-check-icon {
+  color: var(--pawly-teal);
+}
+
+.pawly-count-badge {
+  background: var(--pawly-sage);
+  color: var(--pawly-teal-dark);
+}
+
+.pawly-hero-sparkle {
+  position: absolute;
+  z-index: 2;
+  color: var(--pawly-coral);
+  animation: pawly-sparkle 4s ease-in-out infinite;
+}
+
+.pawly-sparkle-one {
+  top: 14%;
+  left: 8%;
+  font-size: 1.4rem;
+}
+
+.pawly-sparkle-two {
+  right: 21%;
+  bottom: 25%;
+  font-size: 0.9rem;
+  animation-delay: -1s;
+}
+
+.pawly-home section:not(.pawly-hero) {
+  position: relative;
+  padding-top: 5rem !important;
+  padding-bottom: 5rem !important;
+}
+
+.pawly-home #features {
+  margin-top: 1rem;
+  padding-top: 6rem !important;
+  border-radius: 2rem 2rem 0 0;
+}
+
+.pawly-home #features {
+  max-width: none;
+  padding-right: max(1rem, calc((100% - 72rem) / 2));
+  padding-left: max(1rem, calc((100% - 72rem) / 2));
+  background: rgba(246, 236, 222, 0.48);
+}
+
+.pawly-home #features::before,
+.pawly-home .pawly-why-section::after {
+  position: absolute;
+  width: 7rem;
+  height: 7rem;
+  border: 1px dashed rgba(40, 108, 93, 0.18);
+  border-radius: 50%;
+  content: "";
+}
+
+.pawly-home #features::before {
+  top: -3rem;
+  right: 8%;
+}
+
+.pawly-home .pawly-why-section {
+  overflow: hidden;
+  background: linear-gradient(120deg, #dce9df, #edf2e6);
+  box-shadow: 0 1.5rem 3rem rgba(46, 85, 72, 0.08);
+}
+
+.pawly-home .pawly-why-section::after {
+  right: -2rem;
+  bottom: -3rem;
+}
+
+.pawly-home .pawly-cta {
+  max-width: 72rem;
+  background:
+    radial-gradient(circle at 12% 20%, rgba(255, 255, 255, 0.6) 0 0.35rem, transparent 0.4rem),
+    linear-gradient(120deg, #f8ded2, #f6ecde);
+  box-shadow: 0 1.5rem 3rem rgba(63, 53, 42, 0.08);
+}
+
+.pawly-home .pawly-article-image {
+  min-height: 11rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.pawly-home .pawly-article-image::after {
+  position: absolute;
+  right: 1.2rem;
+  bottom: -2.5rem;
+  width: 6rem;
+  height: 6rem;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  content: "";
+  opacity: 0.2;
+}
+
+@keyframes pawly-pet-breathe {
+  0%, 100% { transform: rotate(-5deg) translateY(0); }
+  50% { transform: rotate(-3deg) translateY(-0.4rem); }
+}
+
+@keyframes pawly-card-float {
+  0%, 100% { transform: translateY(0) rotate(0.5deg); }
+  50% { transform: translateY(-0.35rem) rotate(-0.5deg); }
+}
+
+@keyframes pawly-sparkle {
+  0%, 100% { transform: scale(1) rotate(0); opacity: 0.7; }
+  50% { transform: scale(1.15) rotate(10deg); opacity: 1; }
+}
+
+@media (max-width: 575.98px) {
+  .pawly-hero {
+    min-height: auto;
+    padding-top: 2.25rem;
+    padding-bottom: 2rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+
+  .pawly-hero .display-3 {
+    max-width: 22rem;
+    font-size: 2.15rem;
+    line-height: 1.06;
+  }
+
+  .pawly-hero-visual {
+    min-height: 17rem;
+    margin: 0 0.5rem;
+  }
+
+  .pawly-pet-portrait {
+    width: 9.5rem;
+    height: 9.5rem;
+    border-width: 0.6rem;
+  }
+
+  .pawly-pet-face {
+    width: 6.3rem;
+    height: 6rem;
+  }
+
+  .pawly-pet-ear {
+    top: 1.1rem;
+    width: 3rem;
+    height: 3.8rem;
+  }
+
+  .pawly-pet-eye {
+    top: 2rem;
+    width: 0.55rem;
+    height: 0.75rem;
+  }
+
+  .pawly-pet-eye-left {
+    left: 1.45rem;
+  }
+
+  .pawly-pet-eye-right {
+    right: 1.45rem;
+  }
+
+  .pawly-pet-muzzle {
+    bottom: 0.9rem;
+    width: 1.8rem;
+    height: 1.35rem;
+  }
+
+  .pawly-hero-card {
+    font-size: 0.75rem;
+  }
+
+  .pawly-hero-card-vaccine {
+    top: 4%;
+    right: -0.5rem;
+    width: 10.5rem;
+  }
+
+  .pawly-hero-card-health {
+    bottom: 14%;
+    left: -0.5rem;
+  }
+
+  .pawly-hero-card-photos {
+    right: 0;
+    bottom: 4%;
+  }
+
+  .pawly-home section:not(.pawly-hero) {
+    padding-top: 3.5rem !important;
+    padding-bottom: 3.5rem !important;
+  }
+
+  .pawly-home #features {
+    margin-top: 0.75rem;
+    padding-top: 4.25rem !important;
   }
 }

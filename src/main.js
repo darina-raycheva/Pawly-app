@@ -24,10 +24,140 @@ const pageLabels = {
 }
 const pageLabel = pageLabels[page] || pageLabels.Home
 
+const pawlyLogo = `
+  <span class="pawly-logo-paw" aria-hidden="true">
+    <svg viewBox="4 2 24 22" focusable="false">
+      <path d="M10.2 14.2c-2.2 1.1-4.9-.2-5.3-2.6-.4-2.2 1.1-4.2 3.2-4.5 2.3-.3 4.1 1.7 3.8 4-.2 1.4-.8 2.5-1.7 3.1Zm11.6 0c2.2 1.1 4.9-.2 5.3-2.6.4-2.2-1.1-4.2-3.2-4.5-2.3-.3-4.1 1.7-3.8 4 .2 1.4.8 2.5 1.7 3.1ZM15 10.2c-2 .2-3.7-1.5-3.7-3.6S12.7 2.8 14.7 3c1.9.2 3.1 2.1 2.8 4-.3 1.7-1.1 2.9-2.5 3.2Zm2 0c2 .2 3.7-1.5 3.7-3.6S19.3 2.8 17.3 3c-1.9.2-3.1 2.1-2.8 4 .3 1.7 1.1 2.9 2.5 3.2ZM16 12c-3.7 0-7.3 3.5-7.3 7.3 0 2.5 1.8 4.1 4.2 3.7 1.2-.2 2.1-.8 3.1-.8s1.9.6 3.1.8c2.4.4 4.2-1.2 4.2-3.7C23.3 15.5 19.7 12 16 12Z"/>
+    </svg>
+  </span>
+  <span class="pawly-logo-word">Pawly</span>
+`
+
+const homePageContent = `
+  <section class="pawly-hero" aria-labelledby="hero-title">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-6">
+        <p class="pawly-eyebrow mb-2 reveal">Техният свят. Твоето спокойствие.</p>
+        <h1 id="hero-title" class="pawly-title display-3 mb-3 reveal"><span>По-лесна грижа.</span> <span class="pawly-accent">Повече време заедно.</span></h1>
+        <p class="pawly-subtitle lead mb-3 reveal">Pawly е твоят дигитален помощник — помага да подредиш здравето, важните записи и ежедневните грижи за твоя любимец.</p>
+        <div class="d-flex flex-wrap gap-3 align-items-center reveal">
+          <a class="btn btn-primary btn-lg" href="/register.html">Създай профил <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i></a>
+          <a class="pawly-text-link fw-bold px-2" href="#features">Разгледай Pawly <i class="bi bi-chevron-down ms-1" aria-hidden="true"></i></a>
+        </div>
+        <div class="d-flex flex-wrap gap-4 mt-3 pawly-trust-list reveal">
+          <span><i class="bi bi-check-circle-fill me-2" aria-hidden="true"></i>Всичко на едно място</span>
+          <span><i class="bi bi-check-circle-fill me-2" aria-hidden="true"></i>Най-важното винаги под ръка.</span>
+        </div>
+      </div>
+      <div class="col-lg-6 reveal">
+        <div class="pawly-hero-visual">
+          <div class="pawly-hero-shape pawly-hero-shape-one"></div>
+          <div class="pawly-hero-shape pawly-hero-shape-two"></div>
+          <div class="pawly-pet-portrait" aria-label="Илюстрация на усмихнато куче">
+            <div class="pawly-pet-ear pawly-pet-ear-left"></div>
+            <div class="pawly-pet-ear pawly-pet-ear-right"></div>
+            <div class="pawly-pet-face">
+              <span class="pawly-pet-eye pawly-pet-eye-left"></span>
+              <span class="pawly-pet-eye pawly-pet-eye-right"></span>
+              <span class="pawly-pet-muzzle"><i class="bi bi-heart-fill" aria-hidden="true"></i></span>
+            </div>
+          </div>
+          <div class="card pawly-hero-card pawly-hero-card-vaccine">
+            <div class="d-flex align-items-center gap-2 mb-2"><span class="pawly-mini-icon pawly-mini-icon-coral"><i class="bi bi-shield-check" aria-hidden="true"></i></span><span class="small fw-bold">Следваща ваксина</span></div>
+            <div class="d-flex justify-content-between align-items-end"><strong class="h5 mb-0">12 юни</strong><span class="badge rounded-pill text-bg-light">Напомняне</span></div>
+          </div>
+          <div class="card pawly-hero-card pawly-hero-card-health">
+            <div class="d-flex align-items-center gap-2"><span class="pawly-mini-icon pawly-mini-icon-sage"><i class="bi bi-heart-pulse" aria-hidden="true"></i></span><span class="small fw-bold">Здравен запис</span><i class="bi bi-check-circle-fill ms-auto pawly-check-icon" aria-hidden="true"></i></div>
+          </div>
+          <div class="card pawly-hero-card pawly-hero-card-photos">
+            <div class="d-flex align-items-center gap-2"><span class="pawly-mini-icon pawly-mini-icon-sand"><i class="bi bi-images" aria-hidden="true"></i></span><span class="small fw-bold">Профил на любимеца</span><span class="badge rounded-pill pawly-count-badge ms-auto">24</span></div>
+          </div>
+          <div class="pawly-hero-sparkle pawly-sparkle-one"><i class="bi bi-stars" aria-hidden="true"></i></div>
+          <div class="pawly-hero-sparkle pawly-sparkle-two"><i class="bi bi-heart-fill" aria-hidden="true"></i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="py-5" aria-labelledby="features-title">
+    <div class="text-center mb-5 reveal">
+      <p class="pawly-eyebrow mb-2">Твоят помощник за грижа</p>
+      <h2 id="features-title" class="pawly-title display-6 mb-3">Всичко за любимеца ви, подредено с любов</h2>
+      <p class="pawly-subtitle mx-auto pawly-section-intro">Една ясна и спокойна система за онези неща, които искате винаги да са под ръка.</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4 reveal">
+        <article class="card pawly-card pawly-feature-card h-100">
+          <div class="card-body p-4">
+            <div class="pawly-icon-box pawly-icon-sage mb-4"><i class="bi bi-heart-pulse" aria-hidden="true"></i></div>
+            <h3 class="h4 pawly-title mb-3">Здраве без хаос</h3>
+            <p class="text-muted mb-0">Следете прегледи, ваксини и важни бележки, за да сте уверени във всеки момент.</p>
+          </div>
+        </article>
+      </div>
+      <div class="col-md-4 reveal">
+        <article class="card pawly-card pawly-feature-card h-100">
+          <div class="card-body p-4">
+            <div class="pawly-icon-box pawly-icon-coral mb-4"><i class="bi bi-images" aria-hidden="true"></i></div>
+            <h3 class="h4 pawly-title mb-3">Спомени на сигурно място</h3>
+            <p class="text-muted mb-0">Събирайте любимите си снимки и превърнете профила на любимеца в малък дигитален албум.</p>
+          </div>
+        </article>
+      </div>
+      <div class="col-md-4 reveal">
+        <article class="card pawly-card pawly-feature-card h-100">
+          <div class="card-body p-4">
+            <div class="pawly-icon-box pawly-icon-sand mb-4"><i class="bi bi-stars" aria-hidden="true"></i></div>
+            <h3 class="h4 pawly-title mb-3">Грижа, която расте с вас</h3>
+            <p class="text-muted mb-0">Създайте отделен профил за всеки любимец и пазете всичко важно на едно удобно място.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="pawly-why-section py-5 px-4 px-md-5 my-4 reveal" aria-labelledby="why-title">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-5">
+        <p class="pawly-eyebrow mb-2">Защо Pawly?</p>
+        <h2 id="why-title" class="pawly-title display-6 mb-3">Защото грижата е в малките неща.</h2>
+        <p class="text-muted mb-0">Pawly е създаден за хора, които искат да се грижат по-добре, без това да се превръща в още една сложна задача.</p>
+      </div>
+      <div class="col-lg-6 offset-lg-1">
+        <div class="d-flex gap-3 mb-4"><div class="pawly-step-number">01</div><div><h3 class="h5 pawly-title mb-1">Яснота в ежедневието</h3><p class="text-muted mb-0">Виждате важните детайли, когато ви потрябват.</p></div></div>
+        <div class="d-flex gap-3 mb-4"><div class="pawly-step-number">02</div><div><h3 class="h5 pawly-title mb-1">Повече спокойствие</h3><p class="text-muted mb-0">Подредената информация прави грижата по-лека.</p></div></div>
+        <div class="d-flex gap-3"><div class="pawly-step-number">03</div><div><h3 class="h5 pawly-title mb-1">Повече щастливи моменти</h3><p class="text-muted mb-0">Остават повече минути за игра, разходки и гушкане.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-5" aria-labelledby="tips-title">
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4 reveal">
+      <div><p class="pawly-eyebrow mb-2">Полезно за вас</p><h2 id="tips-title" class="pawly-title display-6 mb-0">Малки идеи за голяма грижа</h2></div>
+      <span class="text-muted">Съвети от Pawly</span>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4 reveal"><article class="card pawly-card pawly-article-card h-100"><div class="pawly-article-image pawly-article-image-one"><i class="bi bi-balloon-heart" aria-hidden="true"></i></div><div class="card-body p-4"><p class="pawly-article-meta mb-2">Ежедневна грижа</p><h3 class="h5 pawly-title">Как да създадете спокоен дневен ритъм</h3><p class="text-muted small mb-0">Няколко малки навика, които помагат на любимеца да се чувства сигурен.</p></div></article></div>
+      <div class="col-md-4 reveal"><article class="card pawly-card pawly-article-card h-100"><div class="pawly-article-image pawly-article-image-two"><i class="bi bi-sun" aria-hidden="true"></i></div><div class="card-body p-4"><p class="pawly-article-meta mb-2">Здраве</p><h3 class="h5 pawly-title">Подготовка за следващия преглед</h3><p class="text-muted small mb-0">Какво да запишете предварително, за да бъде посещението по-полезно.</p></div></article></div>
+      <div class="col-md-4 reveal"><article class="card pawly-card pawly-article-card h-100"><div class="pawly-article-image pawly-article-image-three"><i class="bi bi-camera" aria-hidden="true"></i></div><div class="card-body p-4"><p class="pawly-article-meta mb-2">Спомени</p><h3 class="h5 pawly-title">Идеи за снимки, които ще обичате</h3><p class="text-muted small mb-0">Уловете характера на своя любимец в най-естествените му моменти.</p></div></article></div>
+    </div>
+  </section>
+
+  <section class="pawly-cta text-center my-5 reveal" aria-labelledby="cta-title">
+    <div class="pawly-cta-paw" aria-hidden="true"><i class="bi bi-paw-fill"></i></div>
+    <h2 id="cta-title" class="pawly-title display-6 mb-3">Готови ли сте да опитате Pawly?</h2>
+    <p class="pawly-subtitle mb-4">Създайте своето място за грижа — безплатно и за минути.</p>
+    <a class="btn btn-primary btn-lg" href="/register.html">Започнете сега <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i></a>
+  </section>
+<footer class="pawly-footer py-4"><div class="container d-flex flex-wrap justify-content-between align-items-center gap-3"><a class="pawly-brand text-decoration-none" href="/index.html">${pawlyLogo}</a><span class="text-muted small">Създадено с любов за вашия любимец.</span></div></footer>
+`
+
 if (page === 'Login' || page === 'Register') {
   renderAuthPage(page)
 } else {
-const pageContent = page === 'Dashboard'
+const pageContent = page === 'Home'
+  ? homePageContent
+  : page === 'Dashboard'
   ? '<div data-dashboard></div>'
   : page === 'Profile'
     ? '<div data-profile></div>'
@@ -59,7 +189,7 @@ document.querySelector('#app').innerHTML = `
   <nav class="navbar navbar-expand-md pawly-navbar sticky-top" aria-label="Основна навигация">
     <div class="container">
       <a class="navbar-brand pawly-brand" href="/index.html">
-        <i class="bi bi-heart-fill me-2" aria-hidden="true"></i>Pawly
+        ${pawlyLogo}
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#pawlyNavigation"
         aria-controls="pawlyNavigation" aria-expanded="false" aria-label="Превключване на навигацията">
@@ -70,9 +200,9 @@ document.querySelector('#app').innerHTML = `
       </div>
     </div>
   </nav>
-  <main class="container pawly-page">
+  <main class="${page === 'Home' ? 'pawly-home' : 'container pawly-page'}">
     <div class="row justify-content-center">
-      <div class="col-12 col-lg-10">
+      <div class="${page === 'Home' ? 'col-12' : 'col-12 col-lg-10'}">
         ${pageContent}
       </div>
     </div>
@@ -91,6 +221,8 @@ function renderNavigation(session) {
       <a class="nav-link pawly-nav-link px-3" href="/profile.html">Профил</a>`
     : `
       <a class="nav-link pawly-nav-link px-3" href="/index.html">Начало</a>
+      <a class="nav-link pawly-nav-link px-3" href="/index.html#features">За Pawly</a>
+      <a class="nav-link pawly-nav-link px-3" href="/index.html#tips-title">Съвети</a>
       <a class="nav-link pawly-nav-link px-3" href="/login.html">Вход</a>`
 }
 
@@ -107,6 +239,18 @@ async function setupNavigation() {
 }
 
 setupNavigation()
+
+  if (page === 'Home') {
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible')
+          revealObserver.unobserve(entry.target)
+        }
+      })
+    }, { threshold: 0.12 })
+    document.querySelectorAll('.reveal').forEach((element) => revealObserver.observe(element))
+  }
 
   if (page === 'Pets') renderPetsPage()
   if (page === 'Pet Details') renderPetDetailsPage()

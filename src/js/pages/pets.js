@@ -137,7 +137,7 @@ export async function renderPetsPage() {
         await load()
         setStatus(document.querySelector('[data-page-status]'), 'success', pet ? 'Промените са запазени.' : 'Любимецът е добавен успешно.')
       } catch (error) {
-        setStatus(status, 'danger', 'Любимецът не можа да бъде запазен. Моля, опитайте отново.')
+        setStatus(status, 'danger', 'Любимецът не можа да бъде запазен. Моля, опитай отново.')
       } finally {
         button.disabled = false
         button.removeAttribute('aria-busy')
@@ -158,7 +158,7 @@ export async function renderPetsPage() {
     const editButton = event.target.closest('[data-edit-pet]')
     const deleteButton = event.target.closest('[data-delete-pet]')
     if (editButton) openForm(pets.find((pet) => pet.id === editButton.dataset.editPet))
-    if (deleteButton && window.confirm('Сигурни ли сте, че искате да изтриете този любимец?')) {
+    if (deleteButton && window.confirm('Искаш ли да изтриеш този любимец?')) {
       deletePet(deleteButton.dataset.deletePet).then(load).then(() => setStatus(document.querySelector('[data-page-status]'), 'success', 'Любимецът е изтрит.')).catch(() => setStatus(document.querySelector('[data-page-status]'), 'danger', 'Любимецът не можа да бъде изтрит.'))
     }
   })

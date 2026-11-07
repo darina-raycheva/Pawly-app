@@ -12,6 +12,7 @@ import { renderAdminPage } from './js/pages/admin.js'
 import { renderPublicArticles } from './js/pages/home.js'
 import { renderArticlePage } from './js/pages/article.js'
 import { renderMomentsPage } from './js/pages/moments.js'
+import { renderDemoPage } from './js/pages/demo.js'
 import { isCurrentUserAdmin } from './js/services/authorization.js'
 import { getSupabaseClient } from './js/services/supabase.js'
 
@@ -28,6 +29,7 @@ const pageLabels = {
   Admin: 'Администрация',
   Article: 'Статия',
   Moments: 'Pawly Moments',
+  Demo: 'Демо',
 }
 const pageLabel = pageLabels[page] || pageLabels.Home
 
@@ -89,8 +91,8 @@ const homePageContent = `
   <section id="features" class="py-5" aria-labelledby="features-title">
     <div class="text-center mb-5 reveal">
       <p class="pawly-eyebrow mb-2">Твоят помощник за грижа</p>
-      <h2 id="features-title" class="pawly-title display-6 mb-3">Всичко за любимеца ви, подредено с любов</h2>
-      <p class="pawly-subtitle mx-auto pawly-section-intro">Една ясна и спокойна система за онези неща, които искате винаги да са под ръка.</p>
+      <h2 id="features-title" class="pawly-title display-6 mb-3">Всичко за любимеца ти, подредено с любов</h2>
+      <p class="pawly-subtitle mx-auto pawly-section-intro">Една ясна и спокойна система за онези неща, които искаш винаги да са под ръка.</p>
     </div>
     <div class="row g-4">
       <div class="col-md-4 reveal">
@@ -98,7 +100,7 @@ const homePageContent = `
           <div class="card-body p-4">
             <div class="pawly-icon-box pawly-icon-sage mb-4"><i class="bi bi-heart-pulse" aria-hidden="true"></i></div>
             <h3 class="h4 pawly-title mb-3">Здраве без хаос</h3>
-            <p class="text-muted mb-0">Следете прегледи, ваксини и важни бележки, за да сте уверени във всеки момент.</p>
+            <p class="text-muted mb-0">Следи прегледи, ваксини и важни здравни събития на едно място.</p>
           </div>
         </article>
       </div>
@@ -107,8 +109,8 @@ const homePageContent = `
           <div class="card-body p-4">
             <div class="pawly-icon-box pawly-icon-coral mb-4"><i class="bi bi-images" aria-hidden="true"></i></div>
             <h3 class="h4 pawly-title mb-3">Pawly Moments — Спомени, създадени с любов</h3>
-            <p class="text-muted mb-0">Превърнете любимите моменти с вашия домашен любимец в красиви колажи и персонализирани картички. Създайте, изтеглете и споделете!</p>
-            <a class="pawly-text-link d-inline-flex align-items-center gap-2 mt-3" href="/moments.html">Създайте момент <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+            <p class="text-muted mb-0">Превърни любимите си снимки в красиви колажи и персонализирани картички.</p>
+            <a class="pawly-text-link d-inline-flex align-items-center gap-2 mt-3" href="/moments.html">Създай момент <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
           </div>
         </article>
       </div>
@@ -116,8 +118,8 @@ const homePageContent = `
         <article class="card pawly-card pawly-feature-card h-100">
           <div class="card-body p-4">
             <div class="pawly-icon-box pawly-icon-sand mb-4"><i class="bi bi-stars" aria-hidden="true"></i></div>
-            <h3 class="h4 pawly-title mb-3">Грижа, която расте с вас</h3>
-            <p class="text-muted mb-0">Създайте отделен профил за всеки любимец и пазете всичко важно на едно удобно място.</p>
+            <h3 class="h4 pawly-title mb-3">Грижа, която расте с теб</h3>
+            <p class="text-muted mb-0">Създай отделен профил за всеки свой любимец.</p>
           </div>
         </article>
       </div>
@@ -132,16 +134,45 @@ const homePageContent = `
         <p class="text-muted mb-0">Pawly е създаден за хора, които искат да се грижат по-добре, без това да се превръща в още една сложна задача.</p>
       </div>
       <div class="col-lg-6 offset-lg-1">
-        <div class="d-flex gap-3 mb-4"><div class="pawly-step-number">01</div><div><h3 class="h5 pawly-title mb-1">Яснота в ежедневието</h3><p class="text-muted mb-0">Виждате важните детайли, когато ви потрябват.</p></div></div>
+        <div class="d-flex gap-3 mb-4"><div class="pawly-step-number">01</div><div><h3 class="h5 pawly-title mb-1">Яснота в ежедневието</h3><p class="text-muted mb-0">Виждаш важните детайли, когато ти потрябват.</p></div></div>
         <div class="d-flex gap-3 mb-4"><div class="pawly-step-number">02</div><div><h3 class="h5 pawly-title mb-1">Повече спокойствие</h3><p class="text-muted mb-0">Подредената информация прави грижата по-лека.</p></div></div>
-        <div class="d-flex gap-3"><div class="pawly-step-number">03</div><div><h3 class="h5 pawly-title mb-1">Повече щастливи моменти</h3><p class="text-muted mb-0">Остават повече минути за игра, разходки и гушкане.</p></div></div>
+        <div class="d-flex gap-3"><div class="pawly-step-number">03</div><div><h3 class="h5 pawly-title mb-1">Повече щастливи моменти</h3><p class="text-muted mb-0">Остават ти повече минути за игра, разходки и гушкане.</p></div></div>
       </div>
     </div>
   </section>
 
+  <section class="pawly-demo-intro py-5 my-4" aria-labelledby="demo-intro-title">
+    <div class="text-center mb-4 reveal">
+      <p class="pawly-eyebrow mb-2"><i class="bi bi-stars me-1" aria-hidden="true"></i>Разгледай Pawly отвътре</p>
+      <h2 id="demo-intro-title" class="pawly-title display-6 mb-3">Запознай се с Pawly отвътре</h2>
+      <p class="pawly-subtitle mx-auto pawly-section-intro mb-0">Виж колко лесно можеш да организираш грижите за своя любимец. Разгледай примерни профили, здравни записи и важни събития — без регистрация.</p>
+    </div>
+    <div class="row g-4 mb-4">
+      <div class="col-md-4 reveal">
+        <article class="card pawly-card pawly-demo-intro-card h-100">
+          <img src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=700&q=85" alt="Бела, Golden Retriever" loading="lazy" />
+          <div class="card-body p-4"><p class="pawly-eyebrow mb-1">Бела</p><h3 class="h4 pawly-title mb-2">Golden Retriever</h3><p class="text-muted mb-3">2 години · следваща ваксинация</p><span class="small fw-bold text-success"><i class="bi bi-calendar-check me-1" aria-hidden="true"></i>12 юни 2026</span></div>
+        </article>
+      </div>
+      <div class="col-md-4 reveal">
+        <article class="card pawly-card pawly-demo-intro-card h-100">
+          <img src="https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&w=700&q=85" alt="Луна, British Shorthair" loading="lazy" />
+          <div class="card-body p-4"><p class="pawly-eyebrow mb-1">Луна</p><h3 class="h4 pawly-title mb-2">British Shorthair</h3><p class="text-muted mb-3">3 години · преглед при ветеринар</p><span class="small fw-bold text-success"><i class="bi bi-calendar-check me-1" aria-hidden="true"></i>24 юни 2026</span></div>
+        </article>
+      </div>
+      <div class="col-md-4 reveal">
+        <article class="card pawly-card pawly-demo-intro-card h-100">
+          <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=700&q=85" alt="Роки, French Bulldog" loading="lazy" />
+          <div class="card-body p-4"><p class="pawly-eyebrow mb-1">Роки</p><h3 class="h4 pawly-title mb-2">French Bulldog</h3><p class="text-muted mb-3">1 година · контролен преглед</p><span class="small fw-bold text-success"><i class="bi bi-calendar-check me-1" aria-hidden="true"></i>03 юли 2026</span></div>
+        </article>
+      </div>
+    </div>
+    <div class="text-center"><a class="btn btn-primary btn-lg" href="/demo.html">Разгледай демото <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i></a></div>
+  </section>
+
   <section class="py-5" aria-labelledby="tips-title">
     <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4 reveal">
-      <div><p class="pawly-eyebrow mb-2">Полезно за вас</p><h2 id="tips-title" class="pawly-title display-6 mb-0">Малки идеи за голяма грижа</h2></div>
+      <div><p class="pawly-eyebrow mb-2">Полезно за теб</p><h2 id="tips-title" class="pawly-title display-6 mb-0">Малки идеи за голяма грижа</h2></div>
       <span class="text-muted">Съвети от Pawly</span>
     </div>
     <div class="row g-4" data-public-articles>
@@ -151,11 +182,11 @@ const homePageContent = `
 
   <section class="pawly-cta text-center my-5 reveal" aria-labelledby="cta-title">
     <div class="pawly-cta-paw" aria-hidden="true"><i class="bi bi-paw-fill"></i></div>
-    <h2 id="cta-title" class="pawly-title display-6 mb-3">Готови ли сте да опитате Pawly?</h2>
-    <p class="pawly-subtitle mb-4">Създайте своето място за грижа — безплатно и за минути.</p>
+    <h2 id="cta-title" class="pawly-title display-6 mb-3">Готов ли си да опиташ Pawly?</h2>
+    <p class="pawly-subtitle mb-4">Създай своето място за грижа безплатно и само за няколко минути.</p>
     <a class="btn btn-primary btn-lg" href="/register.html">Започнете сега <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i></a>
   </section>
-<footer class="pawly-footer py-4"><div class="container d-flex flex-wrap justify-content-between align-items-center gap-3"><a class="pawly-brand text-decoration-none" href="/index.html">${pawlyLogo}</a><span class="text-muted small">Създадено с любов за вашия любимец.</span></div></footer>
+<footer class="pawly-footer py-4"><div class="container d-flex flex-wrap justify-content-between align-items-center gap-3"><a class="pawly-brand text-decoration-none" href="/index.html">${pawlyLogo}</a><span class="text-muted small">Създадено с любов за твоя любимец.</span></div></footer>
 `
 
 if (page === 'Login' || page === 'Register') {
@@ -173,10 +204,12 @@ const pageContent = page === 'Home'
         ? '<div data-article-page></div>'
         : page === 'Moments'
           ? '<div data-moments></div>'
+            : page === 'Demo'
+              ? '<div data-demo></div>'
     : page === 'Pets'
   ? `
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-      <div><p class="pawly-eyebrow mb-2"><i class="bi bi-sparkle me-1" aria-hidden="true"></i>Грижата за любимеца е лесна</p><h1 class="pawly-title display-5 mb-2">Моите любимци</h1><p class="pawly-subtitle mb-0">Всички профили на любимците ви на едно място.</p></div>
+      <div><p class="pawly-eyebrow mb-2"><i class="bi bi-sparkle me-1" aria-hidden="true"></i>Грижата за любимеца е лесна</p><h1 class="pawly-title display-5 mb-2">Моите любимци</h1><p class="pawly-subtitle mb-0">Всички профили на любимците ти на едно място.</p></div>
       <button class="btn btn-primary" type="button" data-add-pet><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Добави любимец</button>
     </div>
     <div class="alert d-none" data-page-status role="status"></div>
@@ -195,7 +228,7 @@ const pageContent = page === 'Home'
     ? `<div data-pet-details></div>`
     : `
     <div class="mb-4"><p class="pawly-eyebrow mb-2"><i class="bi bi-sparkle me-1" aria-hidden="true"></i>Грижата за любимеца е лесна</p><h1 class="pawly-title display-5 mb-2">${pageLabel}</h1><p class="pawly-subtitle mb-0">Спокойно и грижовно място за щастлив и здрав любимец.</p></div>
-    <section class="card pawly-card pawly-placeholder" aria-labelledby="placeholder-title"><div><div class="pawly-placeholder-icon mb-3"><i class="bi bi-paw-fill" aria-hidden="true"></i></div><h2 id="placeholder-title" class="h4 pawly-title mb-2">Вашето пространство в Pawly е готово</h2><p class="text-muted mb-0">Тази страница е готова за бъдещо развитие.</p></div></section>`
+    <section class="card pawly-card pawly-placeholder" aria-labelledby="placeholder-title"><div><div class="pawly-placeholder-icon mb-3"><i class="bi bi-paw-fill" aria-hidden="true"></i></div><h2 id="placeholder-title" class="h4 pawly-title mb-2">Твоето пространство в Pawly е готово</h2><p class="text-muted mb-0">Тази страница е готова за бъдещо развитие.</p></div></section>`
 
 document.querySelector('#app').innerHTML = `
   <nav class="navbar navbar-expand-md pawly-navbar sticky-top" aria-label="Основна навигация">
@@ -256,6 +289,7 @@ function renderNavigation(session, admin = false) {
       <a class="nav-link pawly-nav-link px-3" href="/index.html">Начало</a>
       <a class="nav-link pawly-nav-link px-3" href="/index.html#features">За Pawly</a>
       <a class="nav-link pawly-nav-link px-3" href="/moments.html">Pawly Moments</a>
+      <a class="nav-link pawly-nav-link px-3" href="/demo.html">Демо</a>
       <a class="nav-link pawly-nav-link px-3" href="/index.html#tips-title">Съвети</a>
       <a class="nav-link pawly-nav-link px-3" href="/login.html">Вход</a>`
 }
@@ -283,4 +317,5 @@ setupNavigation()
   if (page === 'Home') renderPublicArticles()
   if (page === 'Article') renderArticlePage()
   if (page === 'Moments') renderMomentsPage()
+  if (page === 'Demo') renderDemoPage()
 }

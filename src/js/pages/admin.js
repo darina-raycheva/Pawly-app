@@ -36,7 +36,7 @@ function setStatus(element, type, message) {
 
 function getArticleSaveErrorMessage(error) {
   if (error?.name === 'StorageApiError' && error?.message?.toLowerCase().includes('bucket not found')) {
-    return 'Качването на корицата е недостъпно: Storage bucket-ът „article-covers“ не е създаден. Създайте го като private bucket в Supabase Dashboard.'
+    return 'Качването на корицата е недостъпно: Storage bucket-ът „article-covers“ не е създаден. Създай го като private bucket в Supabase Dashboard.'
   }
 
   if (
@@ -47,30 +47,30 @@ function getArticleSaveErrorMessage(error) {
   }
 
   if (error?.name === 'StorageApiError' && (error?.status === 401 || error?.status === 403)) {
-    return 'Нямате права да качвате корици. Проверете Storage policy-ите и администраторската си роля.'
+    return 'Нямаш права да качваш корици. Провери Storage policy-ите и администраторската си роля.'
   }
 
   if (error?.code === '23505' && error?.constraint === 'articles_slug_key') {
-    return 'Този slug вече се използва. Въведете уникален slug за статията.'
+    return 'Този slug вече се използва. Въведи уникален slug за статията.'
   }
 
   if (error?.code === '42501' || error?.status === 403) {
-    return 'Нямате права да запазвате статии. Проверете администраторската си роля.'
+    return 'Нямаш права да запазваш статии. Провери администраторската си роля.'
   }
 
   if (error?.status === 413 || error?.message?.toLowerCase().includes('payload too large')) {
-    return 'Изображението е твърде голямо. Изберете файл до 5 MB.'
+    return 'Изображението е твърде голямо. Избери файл до 5 MB.'
   }
 
-  if (error?.message === 'Въведете съдържание на статията.') {
+  if (error?.message === 'Въведи съдържание на статията.') {
     return error.message
   }
 
-  if (error?.message?.startsWith('Изберете') || error?.message?.startsWith('Изображението')) {
+  if (error?.message?.startsWith('Избери') || error?.message?.startsWith('Изображението')) {
     return error.message
   }
 
-  return 'Статията не можа да бъде запазена. Проверете данните и опитайте отново.'
+  return 'Статията не можа да бъде запазена. Провери данните и опитай отново.'
 }
 
 const allowedImageTypes = ['image/jpeg', 'image/png', 'image/webp']
@@ -88,7 +88,7 @@ function getSafeFileName(file) {
 
 function validateCover(file) {
   if (!file) return null
-  if (!allowedImageTypes.includes(file.type)) return 'Изберете JPG, PNG или WebP изображение.'
+  if (!allowedImageTypes.includes(file.type)) return 'Избери JPG, PNG или WebP изображение.'
   if (file.size > maxImageSize) return 'Изображението трябва да бъде до 5 MB.'
   return null
 }
@@ -111,7 +111,7 @@ function renderAdmin(container, user, articles) {
   container.innerHTML = `
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
       <div><p class="pawly-eyebrow mb-2"><i class="bi bi-shield-check me-1" aria-hidden="true"></i>Администраторска зона</p>
-      <h1 class="pawly-title display-5 mb-2">Статии</h1><p class="pawly-subtitle mb-0">Управлявайте полезното съдържание на Pawly.</p></div>
+      <h1 class="pawly-title display-5 mb-2">Статии</h1><p class="pawly-subtitle mb-0">Управлявай полезното съдържание на Pawly.</p></div>
       <button class="btn btn-primary" type="button" data-new-article><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Нова статия</button>
     </div>
     <div class="alert d-none" data-admin-status role="status"></div>
@@ -129,7 +129,7 @@ function renderAdmin(container, user, articles) {
         <form data-article-form novalidate><div class="modal-body">
           <input type="hidden" name="id" />
           <div class="mb-3"><label class="form-label" for="article-title">Заглавие</label><input class="form-control" id="article-title" name="title" maxlength="200" required /></div>
-          <div class="mb-3"><label class="form-label" for="article-slug">Адрес (slug)</label><input class="form-control" id="article-slug" name="slug" maxlength="200" pattern="[a-z0-9]+(?:-[a-z0-9]+)*" required /><div class="form-text">Използвайте латински букви, цифри и тирета.</div></div>
+          <div class="mb-3"><label class="form-label" for="article-slug">Адрес (slug)</label><input class="form-control" id="article-slug" name="slug" maxlength="200" pattern="[a-z0-9]+(?:-[a-z0-9]+)*" required /><div class="form-text">Използвай латински букви, цифри и тирета.</div></div>
           <div class="mb-3"><label class="form-label" for="article-excerpt">Кратко описание</label><textarea class="form-control" id="article-excerpt" name="excerpt" maxlength="500" rows="3" required></textarea></div>
           <div class="mb-3"><label class="form-label" for="article-cover">Корица</label><input class="form-control" id="article-cover" name="cover" type="file" accept="image/jpeg,image/png,image/webp" /><div class="form-text">JPG, PNG или WebP до 5 MB.</div><div class="mt-3 d-none" data-cover-preview-container><img class="pawly-admin-cover-preview" data-cover-preview alt="Преглед на корицата" /></div><div class="form-check mt-3 d-none" data-remove-cover-container><input class="form-check-input" id="article-remove-cover" name="removeCover" type="checkbox" /><label class="form-check-label" for="article-remove-cover">Премахни текущата корица</label></div></div>
           <div class="mb-3"><label class="form-label" for="article-content-editor">Съдържание</label><div class="pawly-editor-toolbar" role="toolbar" aria-label="Форматиране на съдържанието">
@@ -146,7 +146,7 @@ function renderAdmin(container, user, articles) {
             <button class="btn btn-sm btn-light" type="button" data-editor-command="undo" title="Отмени"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i><span class="visually-hidden">Отмени</span></button>
             <button class="btn btn-sm btn-light" type="button" data-editor-command="redo" title="Повтори"><i class="bi bi-arrow-clockwise" aria-hidden="true"></i><span class="visually-hidden">Повтори</span></button>
             <button class="btn btn-sm btn-light" type="button" data-editor-command="removeFormat" title="Изчисти форматирането"><i class="bi bi-eraser" aria-hidden="true"></i><span class="visually-hidden">Изчисти форматирането</span></button>
-          </div><div class="pawly-rich-editor" id="article-content-editor" data-article-editor contenteditable="true" role="textbox" aria-multiline="true" aria-label="Съдържание на статията"></div><textarea class="d-none" name="content" data-article-content-required></textarea><div class="form-text">Изберете текст и използвайте бутоните или стандартните клавишни комбинации за форматиране.</div></div>
+          </div><div class="pawly-rich-editor" id="article-content-editor" data-article-editor contenteditable="true" role="textbox" aria-multiline="true" aria-label="Съдържание на статията"></div><textarea class="d-none" name="content" data-article-content-required></textarea><div class="form-text">Избери текст и използвай бутоните или стандартните клавишни комбинации за форматиране.</div></div>
           <div class="form-check"><input class="form-check-input" id="article-published" name="published" type="checkbox" /><label class="form-check-label" for="article-published">Публикувана на началната страница</label></div>
           <div class="alert d-none mt-3" data-form-status role="alert"></div>
         </div><div class="modal-footer"><button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Отказ</button><button class="btn btn-primary" type="submit">Запази</button></div></form>
@@ -202,7 +202,7 @@ function renderAdmin(container, user, articles) {
   })
   editorBlock.addEventListener('change', () => runEditorCommand('formatBlock', editorBlock.value))
   container.querySelector('[data-editor-link]').addEventListener('click', () => {
-    const url = window.prompt('Въведете URL адрес:', 'https://')
+    const url = window.prompt('Въведи URL адрес:', 'https://')
     if (url) runEditorCommand('createLink', url.trim())
   })
 
@@ -249,13 +249,13 @@ function renderAdmin(container, user, articles) {
       const selectedCover = coverInput.files[0]
       const coverError = validateCover(selectedCover)
       if (coverError) throw new Error(coverError)
-      if (!editor.textContent.trim()) throw new Error('Въведете съдържание на статията.')
+      if (!editor.textContent.trim()) throw new Error('Въведи съдържание на статията.')
       const existingArticle = currentArticles.find((article) => article.id === form.elements.id.value)
       const duplicateSlug = currentArticles.find(
         (article) => article.slug === payload.slug && article.id !== form.elements.id.value,
       )
       if (duplicateSlug) {
-        const duplicateError = new Error('Този slug вече се използва. Въведете уникален slug за статията.')
+        const duplicateError = new Error('Този slug вече се използва. Въведи уникален slug за статията.')
         duplicateError.code = '23505'
         duplicateError.constraint = 'articles_slug_key'
         throw duplicateError
@@ -307,7 +307,7 @@ function renderAdmin(container, user, articles) {
   })
 
   async function handleDelete(id) {
-    if (!window.confirm('Сигурни ли сте, че искате да изтриете тази статия?')) return
+    if (!window.confirm('Искаш ли да изтриеш тази статия?')) return
     try {
       const article = currentArticles.find((item) => item.id === id)
       await deleteArticle(id)

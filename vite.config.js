@@ -13,6 +13,7 @@ const pages = [
   'admin',
   'article',
   'moments',
+  'demo',
 ]
 
 export default defineConfig({

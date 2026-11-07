@@ -19,9 +19,9 @@ function renderProfile(container, user) {
   const lastName = user.user_metadata?.last_name || ''
   container.innerHTML = `
     <div class="mb-4">
-      <p class="pawly-eyebrow mb-2"><i class="bi bi-person-heart me-1" aria-hidden="true"></i>Вашият Pawly профил</p>
+      <p class="pawly-eyebrow mb-2"><i class="bi bi-person-heart me-1" aria-hidden="true"></i>Твоят Pawly профил</p>
       <h1 class="pawly-title display-5 mb-2">Профил</h1>
-      <p class="pawly-subtitle mb-0">Поддържайте данните си актуални и управлявайте достъпа си.</p>
+      <p class="pawly-subtitle mb-0">Поддържай данните си актуални и управлявай достъпа си.</p>
     </div>
     <div class="alert d-none" data-page-status role="status"></div>
     <div class="row g-4">
@@ -49,7 +49,7 @@ function renderProfile(container, user) {
       <div class="col-12 col-lg-4">
         <section class="card pawly-card p-4 h-100" aria-labelledby="account-actions-title">
           <h2 id="account-actions-title" class="h4 pawly-title mb-3">Акаунт</h2>
-          <p class="text-muted">Излезте от Pawly на това устройство.</p>
+          <p class="text-muted">Излез от Pawly на това устройство.</p>
           <button class="btn btn-outline-danger" type="button" data-sign-out><i class="bi bi-box-arrow-right me-2" aria-hidden="true"></i>Изход</button>
         </section>
       </div>
@@ -69,7 +69,7 @@ function renderProfile(container, user) {
       })
       setStatus(status, 'success', 'Промените по профила са запазени.')
     } catch (error) {
-      setStatus(status, 'danger', 'Профилът не можа да бъде обновен. Моля, опитайте отново.')
+      setStatus(status, 'danger', 'Профилът не можа да бъде обновен. Моля, опитай отново.')
     } finally {
       button.disabled = false
       button.removeAttribute('aria-busy')
@@ -84,7 +84,7 @@ function renderProfile(container, user) {
       window.location.assign('/login.html')
     } catch (error) {
       button.disabled = false
-      setStatus(status, 'danger', 'Изходът не беше успешен. Моля, опитайте отново.')
+      setStatus(status, 'danger', 'Изходът не беше успешен. Моля, опитай отново.')
     }
   })
 }
@@ -96,6 +96,6 @@ export async function renderProfilePage() {
     if (!user) return
     renderProfile(container, user)
   } catch (error) {
-    container.innerHTML = '<div class="alert alert-danger">Профилът не можа да бъде зареден. Моля, опитайте отново.</div>'
+    container.innerHTML = '<div class="alert alert-danger">Профилът не можа да бъде зареден. Моля, опитай отново.</div>'
   }
 }

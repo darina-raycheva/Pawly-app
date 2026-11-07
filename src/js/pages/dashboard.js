@@ -33,8 +33,8 @@ function renderDashboard(container, user, pets, records) {
   container.innerHTML = `
     <div class="mb-4">
       <p class="pawly-eyebrow mb-2"><i class="bi bi-sparkle me-1" aria-hidden="true"></i>Добре дошли в Pawly</p>
-      <h1 class="pawly-title display-5 mb-2">Здравейте, ${escapeHtml(displayName(user))}!</h1>
-      <p class="pawly-subtitle mb-0">Всичко важно за грижата за любимците ви, подредено на едно място.</p>
+      <h1 class="pawly-title display-5 mb-2">Здравей, ${escapeHtml(displayName(user))}!</h1>
+      <p class="pawly-subtitle mb-0">Всичко важно за грижата за любимците ти, подредено на едно място.</p>
     </div>
     <div class="alert d-none" data-page-status role="status"></div>
     <div class="row g-4 mb-4">
@@ -80,6 +80,6 @@ export async function renderDashboardPage() {
     const [pets, records] = await Promise.all([listPets(), listHealthRecords()])
     renderDashboard(container, user, pets, records)
   } catch (error) {
-    container.innerHTML = '<div class="alert alert-danger">Таблото не можа да бъде заредено. Моля, опитайте отново.</div>'
+    container.innerHTML = '<div class="alert alert-danger">Таблото не можа да бъде заредено. Моля, опитай отново.</div>'
   }
 }

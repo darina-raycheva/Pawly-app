@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+import { Modal } from 'bootstrap'
 import './style.css'
 import { renderAuthPage } from './js/pages/auth.js'
 import { renderPetsPage } from './js/pages/pets.js'
@@ -110,7 +111,7 @@ const homePageContent = `
             <div class="pawly-icon-box pawly-icon-coral mb-4"><i class="bi bi-images" aria-hidden="true"></i></div>
             <h3 class="h4 pawly-title mb-3">Pawly Moments — Спомени, създадени с любов</h3>
             <p class="text-muted mb-0">Превърни любимите си снимки в красиви колажи и персонализирани картички.</p>
-            <a class="pawly-text-link d-inline-flex align-items-center gap-2 mt-3" href="/moments.html">Създай момент <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+            <a class="pawly-text-link d-inline-flex align-items-center gap-2 mt-3" href="/moments.html" data-moments-cta>Създай момент <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
           </div>
         </article>
       </div>
@@ -169,6 +170,24 @@ const homePageContent = `
     </div>
     <div class="text-center"><a class="btn btn-primary btn-lg" href="/demo.html">Разгледай демото <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i></a></div>
   </section>
+
+  <div class="modal fade" id="momentsAuthModal" tabindex="-1" aria-labelledby="moments-auth-title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content pawly-card">
+        <div class="modal-header border-0">
+          <h2 class="modal-title h4 pawly-title" id="moments-auth-title">Създай своя Pawly профил</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Затвори"></button>
+        </div>
+        <div class="modal-body pt-0">
+          <p class="text-muted mb-4">За да създаваш и запазваш специалните моменти с любимеца си, първо създай безплатен профил или влез в съществуващия си.</p>
+          <div class="d-flex flex-column flex-sm-row gap-2">
+            <a class="btn btn-primary flex-grow-1" href="/register.html">Регистрирай се</a>
+            <a class="btn btn-outline-primary flex-grow-1" href="/login.html">Влез в профила си</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <section class="py-5" aria-labelledby="tips-title">
     <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4 reveal">
@@ -288,13 +307,31 @@ function renderNavigation(session, admin = false) {
     : `
       <a class="nav-link pawly-nav-link px-3" href="/index.html">Начало</a>
       <a class="nav-link pawly-nav-link px-3" href="/index.html#features">За Pawly</a>
-      <a class="nav-link pawly-nav-link px-3" href="/moments.html">Pawly Moments</a>
       <a class="nav-link pawly-nav-link px-3" href="/demo.html">Демо</a>
       <a class="nav-link pawly-nav-link px-3" href="/index.html#tips-title">Съвети</a>
       <a class="nav-link pawly-nav-link px-3" href="/login.html">Вход</a>`
 }
 
 setupNavigation()
+
+const momentsCta = document.querySelector('[data-moments-cta]')
+if (momentsCta) {
+  momentsCta.addEventListener('click', async (event) => {
+    event.preventDefault()
+    try {
+      const { data, error } = await getSupabaseClient().auth.getSession()
+      if (error) throw error
+      if (data.session) {
+        window.location.assign('/moments.html')
+        return
+      }
+      Modal.getOrCreateInstance(document.querySelector('#momentsAuthModal')).show()
+    } catch (error) {
+      console.error('Pawly: moments access check failed', error)
+      Modal.getOrCreateInstance(document.querySelector('#momentsAuthModal')).show()
+    }
+  })
+}
 
   if (page === 'Home') {
     const revealObserver = new IntersectionObserver((entries) => {

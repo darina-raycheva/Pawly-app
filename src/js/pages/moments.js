@@ -1,4 +1,5 @@
 import { generateCaptionSuggestions } from '../services/caption-assistant.js'
+import { requireUser } from '../services/auth.js'
 
 const MAX_PHOTOS = 3
 const MAX_FILE_SIZE = 5 * 1024 * 1024
@@ -288,9 +289,11 @@ function thumbnail(item) {
   return `<span class="pawly-template-thumb pawly-template-thumb-${item.id}" aria-hidden="true">${cards}<b>${item.photos === 3 ? '3' : item.photos}</b></span>`
 }
 
-export function renderMomentsPage() {
+export async function renderMomentsPage() {
   const container = document.querySelector('[data-moments]')
   if (!container) return
+  const user = await requireUser()
+  if (!user) return
   container.innerHTML = `
     <div class="pawly-moments-heading mb-4">
       <p class="pawly-eyebrow mb-2"><i class="bi bi-stars me-1" aria-hidden="true"></i>Твоето творческо студио</p>

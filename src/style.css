@@ -1341,6 +1341,15 @@ html {
   opacity: 0.2;
 }
 
+.pawly-tips-heading {
+  min-width: 0;
+  flex: 1 1 30rem;
+}
+
+.pawly-tips-label {
+  flex: 0 0 auto;
+}
+
 .pawly-demo-intro {
   max-width: 72rem !important;
   padding-right: max(1rem, calc((100% - 72rem) / 2)) !important;
@@ -1668,8 +1677,14 @@ html {
   }
 
   .pawly-home #tips-title {
-    font-size: clamp(1.75rem, 8.5vw, 2.5rem);
+    font-size: clamp(1.5rem, 8vw, 2.5rem);
     overflow-wrap: break-word;
+  }
+
+  .pawly-tips-heading,
+  .pawly-tips-label {
+    flex-basis: 100%;
+    width: 100%;
   }
 
   .pawly-hero .display-3 {

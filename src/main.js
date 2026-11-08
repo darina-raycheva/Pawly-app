@@ -172,9 +172,9 @@ const homePageContent = `
   </section>
 
   <section class="py-5" aria-labelledby="tips-title">
-    <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4 reveal">
-      <div><p class="pawly-eyebrow mb-2">Полезно за теб</p><h2 id="tips-title" class="pawly-title display-6 mb-0">Малки идеи за голяма грижа</h2></div>
-      <span class="text-muted">Съвети от Pawly</span>
+    <div class="pawly-tips-header d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4 reveal">
+      <div class="pawly-tips-heading"><p class="pawly-eyebrow mb-2">Полезно за теб</p><h2 id="tips-title" class="pawly-title display-6 mb-0">Малки идеи за голяма грижа</h2></div>
+      <span class="pawly-tips-label text-muted">Съвети от Pawly</span>
     </div>
     <div class="row g-4" data-public-articles>
       <div class="col-12"><div class="pawly-placeholder py-5"><div><div class="pawly-placeholder-icon mb-3"><i class="bi bi-hourglass-split" aria-hidden="true"></i></div><p class="text-muted mb-0">Зареждаме полезните статии…</p></div></div></div>

@@ -664,16 +664,18 @@ body {
 }
 
 .pawly-home {
-  overflow-x: hidden;
+  min-width: 0;
 }
 
 .pawly-home > .row > .col-12 {
   width: 100%;
+  min-width: 0;
 }
 
 .pawly-hero,
 .pawly-home section:not(.pawly-hero) {
   max-width: 72rem;
+  min-width: 0;
   margin-left: auto;
   margin-right: auto;
 }
@@ -809,6 +811,7 @@ body {
 
 .pawly-feature-card,
 .pawly-article-card {
+  min-width: 0;
   transition: transform 180ms ease, box-shadow 180ms ease;
 }
 
@@ -826,16 +829,35 @@ body {
 }
 
 .pawly-step-number {
-  flex: 0 0 2.5rem;
-  width: 2.5rem;
-  height: 2.5rem;
+  flex: 0 0 3rem;
+  width: 3rem;
+  height: 3rem;
   display: grid;
   place-items: center;
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.72);
+  border-radius: 0.9rem;
+  font-size: 1.15rem;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.pawly-step-item:hover .pawly-step-number,
+.pawly-step-item:focus-within .pawly-step-number {
+  transform: translateY(-0.15rem) scale(1.04);
+  box-shadow: 0 0.5rem 1rem rgba(63, 53, 42, 0.1);
+}
+
+.pawly-step-sage {
+  background-color: var(--pawly-sage);
   color: var(--pawly-teal-dark);
-  font-size: 0.75rem;
-  font-weight: 900;
+}
+
+.pawly-step-coral {
+  background-color: #fae1d8;
+  color: #bd624a;
+}
+
+.pawly-step-sand {
+  background-color: var(--pawly-sand);
+  color: #947044;
 }
 
 .pawly-article-image {
@@ -967,6 +989,17 @@ body {
 }
 
 @media (max-width: 767.98px) {
+  .pawly-navbar .container {
+    min-width: 0;
+  }
+
+  .pawly-navbar .navbar-collapse {
+    max-height: calc(100vh - 4.5rem);
+    max-height: calc(100dvh - 4.5rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
   .navbar .pawly-logo-paw {
     flex-basis: 24px;
     width: 24px;
@@ -1338,6 +1371,15 @@ html {
   opacity: 0.2;
 }
 
+.pawly-tips-heading {
+  min-width: 0;
+  flex: 1 1 30rem;
+}
+
+.pawly-tips-label {
+  flex: 0 0 auto;
+}
+
 .pawly-demo-intro {
   max-width: 72rem !important;
   padding-right: max(1rem, calc((100% - 72rem) / 2)) !important;
@@ -1658,6 +1700,35 @@ html {
     padding-bottom: 2rem;
     padding-right: 1rem;
     padding-left: 1rem;
+  }
+
+  .pawly-hero::before {
+    display: none;
+  }
+
+  .pawly-home #tips-title {
+    max-width: 100%;
+    font-size: clamp(1.6rem, 7.5vw, 2.35rem);
+    line-height: 1.12;
+  }
+
+  .pawly-home section:not(.pawly-hero) {
+    padding-right: 1rem !important;
+    padding-left: 1rem !important;
+  }
+
+  .pawly-tips-header {
+    display: block !important;
+  }
+
+  .pawly-tips-heading,
+  .pawly-tips-label {
+    width: 100%;
+  }
+
+  .pawly-tips-label {
+    display: block;
+    margin-top: 0.75rem;
   }
 
   .pawly-hero .display-3 {

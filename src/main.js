@@ -135,9 +135,9 @@ const homePageContent = `
         <p class="text-muted mb-0">Pawly е създаден за хора, които искат да се грижат по-добре, без това да се превръща в още една сложна задача.</p>
       </div>
       <div class="col-lg-6 offset-lg-1">
-        <div class="d-flex gap-3 mb-4"><div class="pawly-step-number">01</div><div><h3 class="h5 pawly-title mb-1">Яснота в ежедневието</h3><p class="text-muted mb-0">Виждаш важните детайли, когато ти потрябват.</p></div></div>
-        <div class="d-flex gap-3 mb-4"><div class="pawly-step-number">02</div><div><h3 class="h5 pawly-title mb-1">Повече спокойствие</h3><p class="text-muted mb-0">Подредената информация прави грижата по-лека.</p></div></div>
-        <div class="d-flex gap-3"><div class="pawly-step-number">03</div><div><h3 class="h5 pawly-title mb-1">Повече щастливи моменти</h3><p class="text-muted mb-0">Остават ти повече минути за игра, разходки и гушкане.</p></div></div>
+        <div class="pawly-step-item d-flex gap-3 mb-4"><div class="pawly-step-number pawly-step-sage"><i class="bi bi-calendar-check" aria-hidden="true"></i></div><div><h3 class="h5 pawly-title mb-1">Яснота в ежедневието</h3><p class="text-muted mb-0">Виждаш важните детайли, когато ти потрябват.</p></div></div>
+        <div class="pawly-step-item d-flex gap-3 mb-4"><div class="pawly-step-number pawly-step-coral"><i class="bi bi-heart" aria-hidden="true"></i></div><div><h3 class="h5 pawly-title mb-1">Повече спокойствие</h3><p class="text-muted mb-0">Подредената информация прави грижата по-лека.</p></div></div>
+        <div class="pawly-step-item d-flex gap-3"><div class="pawly-step-number pawly-step-sand"><i class="bi bi-heart-fill" aria-hidden="true"></i></div><div><h3 class="h5 pawly-title mb-1">Повече щастливи моменти</h3><p class="text-muted mb-0">Остават ти повече минути за игра, разходки и гушкане.</p></div></div>
       </div>
     </div>
   </section>
@@ -172,9 +172,9 @@ const homePageContent = `
   </section>
 
   <section class="py-5" aria-labelledby="tips-title">
-    <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4 reveal">
-      <div><p class="pawly-eyebrow mb-2">Полезно за теб</p><h2 id="tips-title" class="pawly-title display-6 mb-0">Малки идеи за голяма грижа</h2></div>
-      <span class="text-muted">Съвети от Pawly</span>
+    <div class="pawly-tips-header d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4 reveal">
+      <div class="pawly-tips-heading"><p class="pawly-eyebrow mb-2">Полезно за теб</p><h2 id="tips-title" class="pawly-title display-6 mb-0">Малки идеи за голяма грижа</h2></div>
+      <span class="pawly-tips-label text-muted">Съвети от Pawly</span>
     </div>
     <div class="row g-4" data-public-articles>
       <div class="col-12"><div class="pawly-placeholder py-5"><div><div class="pawly-placeholder-icon mb-3"><i class="bi bi-hourglass-split" aria-hidden="true"></i></div><p class="text-muted mb-0">Зареждаме полезните статии…</p></div></div></div>
@@ -254,6 +254,23 @@ document.querySelector('#app').innerHTML = `
     </div>
   </main>
 `
+
+function setupMobileNavigation() {
+  const navigation = document.querySelector('#pawlyNavigation')
+  const toggler = document.querySelector('.pawly-navbar .navbar-toggler')
+  if (!navigation || !toggler) return
+
+  toggler.addEventListener('click', () => {
+    if (
+      window.matchMedia('(max-width: 767.98px)').matches
+      && toggler.getAttribute('aria-expanded') !== 'true'
+    ) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+    }
+  })
+}
+
+setupMobileNavigation()
 
 if (page === 'Home') {
   const momentsCta = document.querySelector('[data-moments-cta]')

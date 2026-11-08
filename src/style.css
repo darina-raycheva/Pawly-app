@@ -664,16 +664,18 @@ body {
 }
 
 .pawly-home {
-  overflow-x: hidden;
+  min-width: 0;
 }
 
 .pawly-home > .row > .col-12 {
   width: 100%;
+  min-width: 0;
 }
 
 .pawly-hero,
 .pawly-home section:not(.pawly-hero) {
   max-width: 72rem;
+  min-width: 0;
   margin-left: auto;
   margin-right: auto;
 }
@@ -809,6 +811,7 @@ body {
 
 .pawly-feature-card,
 .pawly-article-card {
+  min-width: 0;
   transition: transform 180ms ease, box-shadow 180ms ease;
 }
 
@@ -1658,6 +1661,15 @@ html {
     padding-bottom: 2rem;
     padding-right: 1rem;
     padding-left: 1rem;
+  }
+
+  .pawly-hero::before {
+    display: none;
+  }
+
+  .pawly-home #tips-title {
+    font-size: clamp(1.75rem, 8.5vw, 2.5rem);
+    overflow-wrap: break-word;
   }
 
   .pawly-hero .display-3 {

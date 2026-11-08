@@ -990,10 +990,26 @@ body {
 
 @media (max-width: 767.98px) {
   .pawly-navbar .container {
+    position: relative;
     min-width: 0;
   }
 
+  .pawly-navbar .navbar-toggler {
+    position: relative;
+    z-index: 2;
+  }
+
   .pawly-navbar .navbar-collapse {
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    right: 0;
+    left: 0;
+    width: 100%;
+    padding: 0.5rem 0.75rem 0.75rem;
+    border-top: 1px solid rgba(233, 222, 209, 0.8);
+    background-color: rgba(255, 250, 244, 0.98);
+    box-shadow: 0 0.75rem 1.5rem rgba(63, 53, 42, 0.1);
     max-height: calc(100vh - 4.5rem);
     max-height: calc(100dvh - 4.5rem);
     overflow-y: auto;

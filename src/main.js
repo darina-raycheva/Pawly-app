@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
-import { Modal } from 'bootstrap'
+import { Dropdown, Modal } from 'bootstrap'
 import './style.css'
 import { renderAuthPage } from './js/pages/auth.js'
 import { renderPetsPage } from './js/pages/pets.js'
@@ -271,6 +271,16 @@ function setupMobileNavigation() {
 }
 
 setupMobileNavigation()
+
+function setupDropdownDismissal() {
+  window.addEventListener('scroll', () => {
+    document.querySelectorAll('.dropdown.show [data-bs-toggle="dropdown"]').forEach((toggle) => {
+      Dropdown.getInstance(toggle)?.hide()
+    })
+  }, { passive: true })
+}
+
+setupDropdownDismissal()
 
 if (page === 'Home') {
   const momentsCta = document.querySelector('[data-moments-cta]')

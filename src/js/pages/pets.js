@@ -2,7 +2,6 @@ import { requireUser } from '../services/auth.js'
 import { createPet, deletePet, getPetPhotoUrl, listPets, updatePet, uploadPetPhoto } from '../services/pets.js'
 import { fillPetForm, readPetForm } from '../utils/pet-validation.js'
 import { escapeHtml } from '../utils/html.js'
-import { Dropdown } from 'bootstrap'
 
 const sexLabels = { male: 'Мъжки', female: 'Женски', unknown: 'Не е посочен' }
 
@@ -86,13 +85,6 @@ function renderPets(container, pets) {
         ${pet.weight ? `<p class="small text-muted mt-3 mb-0"><i class="bi bi-speedometer2 me-1" aria-hidden="true"></i>${escapeHtml(pet.weight)} кг</p>` : ''}
       </article>
     </div>`).join('')}</div>`
-  container.querySelectorAll('[data-bs-toggle="dropdown"]').forEach((toggle) => {
-    const dropdown = Dropdown.getOrCreateInstance(toggle)
-    toggle.addEventListener('click', (event) => {
-      event.stopPropagation()
-      dropdown.toggle()
-    })
-  })
 }
 
 function setStatus(element, type, message) {

@@ -11,6 +11,8 @@ The project is a lightweight multi-page frontend built with vanilla
 JavaScript and Supabase. It is designed to make important pet information
 easy to update, find, and share while keeping each user's data isolated.
 
+**Live application:** [https://pawlybg.netlify.app/](https://pawlybg.netlify.app/)
+
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES%20modules-f7df1e?logo=javascript&logoColor=222)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=fff)](https://vite.dev/)
 [![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952b3?logo=bootstrap&logoColor=fff)](https://getbootstrap.com/)
@@ -25,6 +27,7 @@ easy to update, find, and share while keeping each user's data isolated.
 - [Database](#database)
 - [Installation and setup](#installation-and-setup)
 - [Demo and access](#demo-and-access)
+- [Test access](#test-access)
 - [Security](#security)
 - [Project structure](#project-structure)
 - [Development context](#development-context)
@@ -63,26 +66,13 @@ easy to update, find, and share while keeping each user's data isolated.
 
 ### Planned
 
-The following are intentionally not presented as completed functionality:
-
-- A deployed production URL and hosted environment.
-- Additional pet-care workflows beyond the current profile, records,
-  articles, and creative tools.
+Additional pet-care workflows beyond the current profile, records, articles,
+and creative tools may be added in the future.
 
 ## Screenshots
 
-The repository does not currently contain committed screenshots. The
-following placeholders mark the views that should be captured for a future
-portfolio presentation:
-
-| View | Screenshot |
-| --- | --- |
-| Homepage | *Screenshot placeholder — add a homepage capture* |
-| Dashboard | *Screenshot placeholder — add a signed-in dashboard capture* |
-| My Pets | *Screenshot placeholder — add the pet list capture* |
-| Digital Pet Passport | *Screenshot placeholder — add a pet details/passport capture* |
-| Pawly Moments | *Screenshot placeholder — add the collage creator capture* |
-| Public Demo | *Screenshot placeholder — add the interactive demo capture* |
+Screenshots are optional future portfolio improvements and are not required
+to run or evaluate the application.
 
 ## Technology stack
 
@@ -208,7 +198,9 @@ Do not commit `.env`, real credentials, service-role keys, or other secrets.
 Apply the SQL migrations from `supabase/migrations/` to configure the
 database, RLS policies, and Storage policies. Follow the
 [administrator setup guide](supabase/ADMIN_SETUP.md) when assigning the
-first administrator.
+first administrator. The production Netlify deployment already has its
+Supabase environment variables configured; local development requires a
+local `.env` file based on `.env.example`.
 
 ### 4. Start the development server
 
@@ -229,16 +221,23 @@ The available npm scripts are defined in [`package.json`](package.json).
 
 ## Demo and access
 
-Open `demo.html` in the Vite development server to explore the public
-interactive demo. It uses fictional, in-browser sample data and is
+Open [`demo.html`](demo.html) in the Vite development server, or visit
+[the deployed demo](https://pawlybg.netlify.app/demo.html), to explore the
+public interactive demo. It uses fictional, in-browser sample data and is
 intentionally read-only: it does not represent a signed-in account, does
 not persist user changes, and does not provide access to Supabase data.
 
 The full experience is available through the other pages after Supabase
-configuration and account registration. No demo credentials are required or
-provided.
+configuration and account registration.
 
-> **Production URL:** *To be added after a Netlify deployment is created.*
+## Test access
+
+Evaluators can register a normal account through the application to test
+authenticated features such as pet profiles, health records, profile
+management, and Pawly Moments. No shared test credentials are published.
+Administrator-only article management requires an account that has been
+assigned the `admin` role in Supabase; the setup is documented in the
+[administrator setup guide](supabase/ADMIN_SETUP.md).
 
 ## Security
 
@@ -278,6 +277,9 @@ Pawly-app/
 ├── package.json
 ├── package-lock.json
 ├── vite.config.js
+├── docs/
+│   ├── ARCHITECTURE.md
+│   └── DATABASE.md
 ├── src/
 │   ├── main.js
 │   ├── style.css
@@ -287,6 +289,7 @@ Pawly-app/
 │       ├── pages/
 │       ├── services/
 │       └── utils/
+├── public/
 └── supabase/
     ├── ADMIN_SETUP.md
     ├── ARTICLE_STORAGE_SETUP.md
@@ -303,10 +306,6 @@ remain part of the project's source and review process.
 
 ## Roadmap
 
-- [ ] Add a Netlify production deployment and link it here.
-- [ ] Add curated screenshots to the repository.
-- [ ] Add dedicated architecture and database documentation.
-- [ ] Add a complete database ER diagram.
 - [ ] Extend the pet-care experience with additional practical workflows.
 
 ## Author

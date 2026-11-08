@@ -1677,14 +1677,28 @@ html {
   }
 
   .pawly-home #tips-title {
-    font-size: clamp(1.5rem, 8vw, 2.5rem);
-    overflow-wrap: break-word;
+    max-width: 100%;
+    font-size: clamp(1.6rem, 7.5vw, 2.35rem);
+    line-height: 1.12;
+  }
+
+  .pawly-home section:not(.pawly-hero) {
+    padding-right: 1rem !important;
+    padding-left: 1rem !important;
+  }
+
+  .pawly-tips-header {
+    display: block !important;
   }
 
   .pawly-tips-heading,
   .pawly-tips-label {
-    flex-basis: 100%;
     width: 100%;
+  }
+
+  .pawly-tips-label {
+    display: block;
+    margin-top: 0.75rem;
   }
 
   .pawly-hero .display-3 {

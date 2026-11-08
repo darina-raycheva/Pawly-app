@@ -1,6 +1,8 @@
 # Pawly Database
 
-The diagram below reflects the relationships declared in the SQL migrations. `auth.users` is managed by Supabase Auth; only the referenced `id` column is shown because the application migrations do not define the Auth table.
+The diagram below reflects the relationships declared in the SQL migrations.
+`auth.users` is managed by Supabase Auth; only the referenced `id` column is
+shown because the application migrations do not define the Auth table.
 
 ```mermaid
 erDiagram
@@ -65,7 +67,8 @@ erDiagram
 
 ### `auth.users`
 
-Managed by Supabase Auth. The application migrations reference `auth.users(id)` but do not define its other columns.
+Managed by Supabase Auth. The application migrations reference
+`auth.users(id)` but do not define its other columns.
 
 ### `public.user_roles`
 
@@ -75,7 +78,8 @@ Defined in `20261107213000_create_roles_and_articles.sql`:
 - `role text not null default 'user'`
 - `created_at timestamptz not null`
 
-The role is constrained to `admin` or `user`. New accounts do not automatically receive a role row in the current implementation. Accounts without a role row are treated as non-admin by the frontend and database checks.
+The role is constrained to `admin` or `user`. Accounts without a role row
+are treated as non-admin by the frontend and database checks.
 
 ### `public.pets`
 
@@ -110,7 +114,8 @@ Defined in `20261106210000_create_health_records.sql`:
 
 ### `public.articles`
 
-Defined in `20261107213000_create_roles_and_articles.sql` and extended in `20261107220000_add_article_cover_images.sql`:
+Defined in `20261107213000_create_roles_and_articles.sql` and extended in
+`20261107220000_add_article_cover_images.sql`:
 
 - `id uuid primary key`
 - `title text not null`
@@ -125,5 +130,8 @@ Defined in `20261107213000_create_roles_and_articles.sql` and extended in `20261
 
 ## Row Level Security
 
-The migrations enable RLS and define ownership policies for pets and health records. Role rows are readable only by the authenticated owner. Article writes require `public.is_admin()`, while public readers can access published articles. Storage policies separately protect pet photos and article covers.
-
+The migrations enable RLS and define ownership policies for pets and health
+records. Role rows are readable only by the authenticated owner. Public
+readers can access published articles, while article writes require
+`public.is_admin()`. Storage policies separately protect pet photos and
+article covers.

@@ -135,9 +135,9 @@ const homePageContent = `
         <p class="text-muted mb-0">Pawly е създаден за хора, които искат да се грижат по-добре, без това да се превръща в още една сложна задача.</p>
       </div>
       <div class="col-lg-6 offset-lg-1">
-        <div class="d-flex gap-3 mb-4"><div class="pawly-step-number">01</div><div><h3 class="h5 pawly-title mb-1">Яснота в ежедневието</h3><p class="text-muted mb-0">Виждаш важните детайли, когато ти потрябват.</p></div></div>
-        <div class="d-flex gap-3 mb-4"><div class="pawly-step-number">02</div><div><h3 class="h5 pawly-title mb-1">Повече спокойствие</h3><p class="text-muted mb-0">Подредената информация прави грижата по-лека.</p></div></div>
-        <div class="d-flex gap-3"><div class="pawly-step-number">03</div><div><h3 class="h5 pawly-title mb-1">Повече щастливи моменти</h3><p class="text-muted mb-0">Остават ти повече минути за игра, разходки и гушкане.</p></div></div>
+        <div class="pawly-step-item d-flex gap-3 mb-4"><div class="pawly-step-number pawly-step-sage"><i class="bi bi-calendar-check" aria-hidden="true"></i></div><div><h3 class="h5 pawly-title mb-1">Яснота в ежедневието</h3><p class="text-muted mb-0">Виждаш важните детайли, когато ти потрябват.</p></div></div>
+        <div class="pawly-step-item d-flex gap-3 mb-4"><div class="pawly-step-number pawly-step-coral"><i class="bi bi-heart" aria-hidden="true"></i></div><div><h3 class="h5 pawly-title mb-1">Повече спокойствие</h3><p class="text-muted mb-0">Подредената информация прави грижата по-лека.</p></div></div>
+        <div class="pawly-step-item d-flex gap-3"><div class="pawly-step-number pawly-step-sand"><i class="bi bi-heart-fill" aria-hidden="true"></i></div><div><h3 class="h5 pawly-title mb-1">Повече щастливи моменти</h3><p class="text-muted mb-0">Остават ти повече минути за игра, разходки и гушкане.</p></div></div>
       </div>
     </div>
   </section>

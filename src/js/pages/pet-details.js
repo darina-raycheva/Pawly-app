@@ -1,5 +1,6 @@
 import { requireUser } from '../services/auth.js'
 import { getPet, getPetPhotoUrl } from '../services/pets.js'
+import { escapeHtml } from '../utils/html.js'
 
 export async function renderPetDetailsPage() {
   const user = await requireUser()
@@ -20,15 +21,15 @@ export async function renderPetDetailsPage() {
     container.innerHTML = `
       <article class="card pawly-card p-4 p-md-5">
         <a class="pawly-text-link d-inline-block mb-4" href="/pets.html"><i class="bi bi-arrow-left me-1" aria-hidden="true"></i>Назад към любимците</a>
-        ${photoUrl ? `<img class="pawly-pet-photo mb-3" src="${photoUrl}" alt="Снимка на ${pet.name}" />` : '<div class="pawly-placeholder-icon mb-3"><i class="bi bi-paw-fill" aria-hidden="true"></i></div>'}
-        <h2 class="pawly-title">${pet.name}</h2>
+        ${photoUrl ? `<img class="pawly-pet-photo mb-3" src="${escapeHtml(photoUrl)}" alt="Снимка на ${escapeHtml(pet.name)}" />` : '<div class="pawly-placeholder-icon mb-3"><i class="bi bi-paw-fill" aria-hidden="true"></i></div>'}
+        <h2 class="pawly-title">${escapeHtml(pet.name)}</h2>
         <dl class="row mt-4 mb-0">
-          <dt class="col-sm-4 mb-2">Вид</dt><dd class="col-sm-8 mb-2">${pet.species}</dd>
-          <dt class="col-sm-4 mb-2">Порода</dt><dd class="col-sm-8 mb-2">${pet.breed || 'Не е посочена'}</dd>
+          <dt class="col-sm-4 mb-2">Вид</dt><dd class="col-sm-8 mb-2">${escapeHtml(pet.species)}</dd>
+          <dt class="col-sm-4 mb-2">Порода</dt><dd class="col-sm-8 mb-2">${escapeHtml(pet.breed || 'Не е посочена')}</dd>
           <dt class="col-sm-4 mb-2">Пол</dt><dd class="col-sm-8 mb-2">${pet.sex === 'male' ? 'Мъжки' : pet.sex === 'female' ? 'Женски' : 'Не е посочен'}</dd>
           <dt class="col-sm-4 mb-2">Дата на раждане</dt><dd class="col-sm-8 mb-2">${pet.birth_date ? new Date(`${pet.birth_date}T00:00:00`).toLocaleDateString('bg-BG') : 'Не е посочена'}</dd>
-          <dt class="col-sm-4 mb-2">Тегло</dt><dd class="col-sm-8 mb-2">${pet.weight ? `${pet.weight} кг` : 'Не е посочено'}</dd>
-          <dt class="col-sm-4">Бележки</dt><dd class="col-sm-8">${pet.notes || 'Няма добавени бележки.'}</dd>
+          <dt class="col-sm-4 mb-2">Тегло</dt><dd class="col-sm-8 mb-2">${escapeHtml(pet.weight ? `${pet.weight} кг` : 'Не е посочено')}</dd>
+          <dt class="col-sm-4">Бележки</dt><dd class="col-sm-8">${escapeHtml(pet.notes || 'Няма добавени бележки.')}</dd>
         </dl>
         <a class="btn btn-primary mt-4" href="/pets.html?edit=${encodeURIComponent(pet.id)}">Редактиране</a>
       </article>`

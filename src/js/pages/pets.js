@@ -1,6 +1,7 @@
 import { requireUser } from '../services/auth.js'
 import { createPet, deletePet, getPetPhotoUrl, listPets, updatePet, uploadPetPhoto } from '../services/pets.js'
 import { fillPetForm, readPetForm } from '../utils/pet-validation.js'
+import { escapeHtml } from '../utils/html.js'
 import { Dropdown } from 'bootstrap'
 
 const sexLabels = { male: 'Мъжки', female: 'Женски', unknown: 'Не е посочен' }
@@ -63,10 +64,10 @@ function petForm(pet) {
 
 function formatPetDetails(pet) {
   return [
-    pet.species,
-    pet.breed,
-    pet.sex && sexLabels[pet.sex],
-    pet.birth_date && `Роден на ${new Date(`${pet.birth_date}T00:00:00`).toLocaleDateString('bg-BG')}`,
+    pet.species && escapeHtml(pet.species),
+    pet.breed && escapeHtml(pet.breed),
+    pet.sex && escapeHtml(sexLabels[pet.sex] || 'Не е посочен'),
+    pet.birth_date && escapeHtml(`Роден на ${new Date(`${pet.birth_date}T00:00:00`).toLocaleDateString('bg-BG')}`),
   ].filter(Boolean).join(' · ')
 }
 
@@ -77,12 +78,12 @@ function renderPets(container, pets) {
   }
   container.innerHTML = `<div class="row g-4">${pets.map((pet) => `
     <div class="col-12 col-md-6">
-      <article class="card pawly-card h-100 p-4 pawly-pet-card" data-pet-card="${pet.id}" tabindex="0" role="link" aria-label="Преглед на ${pet.name}">
+      <article class="card pawly-card h-100 p-4 pawly-pet-card" data-pet-card="${escapeHtml(pet.id)}" tabindex="0" role="link" aria-label="Преглед на ${escapeHtml(pet.name)}">
         <div class="d-flex justify-content-between gap-3">
-          <div>${pet.photoUrl ? `<img class="pawly-pet-photo mb-3" src="${pet.photoUrl}" alt="Снимка на ${pet.name}" />` : '<div class="pawly-placeholder-icon mb-3"><i class="bi bi-paw-fill" aria-hidden="true"></i></div>'}<h2 class="h4 pawly-title mb-1">${pet.name}</h2><p class="text-muted mb-0">${formatPetDetails(pet)}</p></div>
-          <div class="dropdown"><button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="dropdown" aria-label="Действия за ${pet.name}"><i class="bi bi-three-dots-vertical" aria-hidden="true"></i></button><ul class="dropdown-menu dropdown-menu-end"><li><a class="dropdown-item" href="/pet-details.html?id=${encodeURIComponent(pet.id)}">Преглед</a></li><li><button class="dropdown-item" type="button" data-edit-pet="${pet.id}">Редактирай</button></li><li><button class="dropdown-item text-danger" type="button" data-delete-pet="${pet.id}">Изтрий</button></li></ul></div>
+          <div>${pet.photoUrl ? `<img class="pawly-pet-photo mb-3" src="${escapeHtml(pet.photoUrl)}" alt="Снимка на ${escapeHtml(pet.name)}" />` : '<div class="pawly-placeholder-icon mb-3"><i class="bi bi-paw-fill" aria-hidden="true"></i></div>'}<h2 class="h4 pawly-title mb-1">${escapeHtml(pet.name)}</h2><p class="text-muted mb-0">${formatPetDetails(pet)}</p></div>
+          <div class="dropdown"><button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="dropdown" aria-label="Действия за ${escapeHtml(pet.name)}"><i class="bi bi-three-dots-vertical" aria-hidden="true"></i></button><ul class="dropdown-menu dropdown-menu-end"><li><a class="dropdown-item" href="/pet-details.html?id=${encodeURIComponent(pet.id)}">Преглед</a></li><li><button class="dropdown-item" type="button" data-edit-pet="${escapeHtml(pet.id)}">Редактирай</button></li><li><button class="dropdown-item text-danger" type="button" data-delete-pet="${escapeHtml(pet.id)}">Изтрий</button></li></ul></div>
         </div>
-        ${pet.weight ? `<p class="small text-muted mt-3 mb-0"><i class="bi bi-speedometer2 me-1" aria-hidden="true"></i>${pet.weight} кг</p>` : ''}
+        ${pet.weight ? `<p class="small text-muted mt-3 mb-0"><i class="bi bi-speedometer2 me-1" aria-hidden="true"></i>${escapeHtml(pet.weight)} кг</p>` : ''}
       </article>
     </div>`).join('')}</div>`
   container.querySelectorAll('[data-bs-toggle="dropdown"]').forEach((toggle) => {

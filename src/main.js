@@ -1,6 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
-import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import { Collapse, Dropdown, Modal } from 'bootstrap'
 import './style.css'
 import { renderAuthPage } from './js/pages/auth.js'
@@ -237,8 +236,7 @@ document.querySelector('#app').innerHTML = `
       <a class="navbar-brand pawly-brand" href="/index.html">
         ${pawlyLogo}
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#pawlyNavigation"
-        aria-controls="pawlyNavigation" aria-expanded="false" aria-label="Превключване на навигацията">
+      <button class="navbar-toggler" type="button" aria-controls="pawlyNavigation" aria-expanded="false" aria-label="Превключване на навигацията">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="pawlyNavigation">
@@ -258,11 +256,19 @@ document.querySelector('#app').innerHTML = `
 function setupMobileNavigation() {
   const navigation = document.querySelector('#pawlyNavigation')
   const navbar = document.querySelector('.pawly-navbar')
-  if (!navigation || !navbar) return
+  const toggler = navbar?.querySelector('.navbar-toggler')
+  if (!navigation || !navbar || !toggler) return
+
+  const collapse = Collapse.getOrCreateInstance(navigation, { toggle: false })
+  const syncExpandedState = (expanded) => toggler.setAttribute('aria-expanded', String(expanded))
+
+  navigation.addEventListener('shown.bs.collapse', () => syncExpandedState(true))
+  navigation.addEventListener('hidden.bs.collapse', () => syncExpandedState(false))
+  toggler.addEventListener('click', () => collapse.toggle())
 
   const closeNavigation = () => {
     if (!window.matchMedia('(max-width: 767.98px)').matches) return
-    Collapse.getOrCreateInstance(navigation, { toggle: false }).hide()
+    collapse.hide()
   }
 
   navigation.addEventListener('click', (event) => {

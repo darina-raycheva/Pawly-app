@@ -257,10 +257,14 @@ document.querySelector('#app').innerHTML = `
 
 function setupMobileNavigation() {
   const navigation = document.querySelector('#pawlyNavigation')
-  if (!navigation) return
+  const toggler = document.querySelector('.pawly-navbar .navbar-toggler')
+  if (!navigation || !toggler) return
 
-  navigation.addEventListener('show.bs.collapse', () => {
-    if (window.matchMedia('(max-width: 767.98px)').matches) {
+  toggler.addEventListener('click', () => {
+    if (
+      window.matchMedia('(max-width: 767.98px)').matches
+      && toggler.getAttribute('aria-expanded') !== 'true'
+    ) {
       window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
     }
   })

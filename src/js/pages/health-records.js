@@ -1,6 +1,7 @@
 import { requireUser } from '../services/auth.js'
 import { createHealthRecord, deleteHealthRecord, listHealthRecords, updateHealthRecord } from '../services/health-records.js'
 import { listPets } from '../services/pets.js'
+import { Dropdown } from 'bootstrap'
 
 const recordTypeLabels = {
   vaccination: 'Ваксинация',
@@ -95,7 +96,7 @@ function renderRecords(container, records) {
             <p class="text-muted mb-0"><i class="bi bi-paw-fill me-1" aria-hidden="true"></i>${escapeHtml(record.pets.name)}</p>
           </div>
           <div class="dropdown">
-            <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="dropdown" aria-label="Действия за ${escapeHtml(record.title)}"><i class="bi bi-three-dots-vertical" aria-hidden="true"></i></button>
+            <button class="btn btn-sm btn-outline-secondary" type="button" data-health-record-dropdown aria-label="Действия за ${escapeHtml(record.title)}"><i class="bi bi-three-dots-vertical" aria-hidden="true"></i></button>
             <ul class="dropdown-menu dropdown-menu-end">
               <li><button class="dropdown-item" type="button" data-edit-record="${record.id}">Редактиране</button></li>
               <li><button class="dropdown-item text-danger" type="button" data-delete-record="${record.id}">Изтриване</button></li>
@@ -109,6 +110,13 @@ function renderRecords(container, records) {
         </dl>
       </article>
     </div>`).join('')}</div>`
+  container.querySelectorAll('[data-health-record-dropdown]').forEach((toggle) => {
+    const dropdown = Dropdown.getOrCreateInstance(toggle)
+    toggle.addEventListener('click', (event) => {
+      event.stopPropagation()
+      dropdown.toggle()
+    })
+  })
 }
 
 function setStatus(element, type, message) {
@@ -145,6 +153,16 @@ export async function renderHealthRecordsPage() {
     records = await listHealthRecords()
     renderRecords(listContainer, records)
   }
+
+  const closeRecordDropdowns = () => {
+    listContainer.querySelectorAll('[data-health-record-dropdown]').forEach((toggle) => {
+      Dropdown.getInstance(toggle)?.hide()
+    })
+  }
+
+  document.addEventListener('pointerdown', (event) => {
+    if (!event.target.closest('.dropdown')) closeRecordDropdowns()
+  }, { passive: true })
 
   const closeForm = () => {
     formContainer.innerHTML = ''
@@ -204,10 +222,12 @@ export async function renderHealthRecordsPage() {
     const editButton = event.target.closest('[data-edit-record]')
     const deleteButton = event.target.closest('[data-delete-record]')
     if (editButton) {
+      closeRecordDropdowns()
       openForm(records.find((record) => record.id === editButton.dataset.editRecord))
       return
     }
     if (deleteButton && window.confirm('Искаш ли да изтриеш този здравен запис?')) {
+      closeRecordDropdowns()
       deleteButton.disabled = true
       try {
         await deleteHealthRecord(deleteButton.dataset.deleteRecord)

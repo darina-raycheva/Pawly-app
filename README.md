@@ -66,7 +66,6 @@ easy to update, find, and share while keeping each user's data isolated.
 The following are intentionally not presented as completed functionality:
 
 - A deployed production URL and hosted environment.
-- Dedicated architecture, database, and ER-diagram documents.
 - Additional pet-care workflows beyond the current profile, records,
   articles, and creative tools.
 
@@ -132,11 +131,10 @@ flowchart TD
 5. Returned data is escaped or sanitised before being inserted into rendered
    HTML.
 
-The repository currently has no `docs/` directory, so
-`docs/ARCHITECTURE.md` and `docs/DATABASE.md` are not linked here as broken
-references. The migration files and this section are the current
-architecture documentation. A complete ER diagram is also not currently
-committed; the migration files below are the authoritative schema source.
+Detailed documentation is available in
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and
+[docs/DATABASE.md](docs/DATABASE.md), including the Mermaid ER diagram.
+The migration files remain the authoritative schema source.
 
 Related setup documentation:
 

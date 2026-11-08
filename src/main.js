@@ -255,6 +255,19 @@ document.querySelector('#app').innerHTML = `
   </main>
 `
 
+function setupMobileNavigation() {
+  const navigation = document.querySelector('#pawlyNavigation')
+  if (!navigation) return
+
+  navigation.addEventListener('show.bs.collapse', () => {
+    if (window.matchMedia('(max-width: 767.98px)').matches) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+    }
+  })
+}
+
+setupMobileNavigation()
+
 if (page === 'Home') {
   const momentsCta = document.querySelector('[data-moments-cta]')
   const momentsModal = document.createElement('div')

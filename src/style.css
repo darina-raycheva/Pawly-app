@@ -970,6 +970,17 @@ body {
 }
 
 @media (max-width: 767.98px) {
+  .pawly-navbar .container {
+    min-width: 0;
+  }
+
+  .pawly-navbar .navbar-collapse {
+    max-height: calc(100vh - 4.5rem);
+    max-height: calc(100dvh - 4.5rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
   .navbar .pawly-logo-paw {
     flex-basis: 24px;
     width: 24px;

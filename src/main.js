@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
-import { Dropdown, Modal } from 'bootstrap'
+import { Collapse, Dropdown, Modal } from 'bootstrap'
 import './style.css'
 import { renderAuthPage } from './js/pages/auth.js'
 import { renderPetsPage } from './js/pages/pets.js'
@@ -257,17 +257,23 @@ document.querySelector('#app').innerHTML = `
 
 function setupMobileNavigation() {
   const navigation = document.querySelector('#pawlyNavigation')
-  const toggler = document.querySelector('.pawly-navbar .navbar-toggler')
-  if (!navigation || !toggler) return
+  const navbar = document.querySelector('.pawly-navbar')
+  if (!navigation || !navbar) return
 
-  toggler.addEventListener('click', () => {
-    if (
-      window.matchMedia('(max-width: 767.98px)').matches
-      && toggler.getAttribute('aria-expanded') !== 'true'
-    ) {
-      window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
-    }
+  const closeNavigation = () => {
+    if (!window.matchMedia('(max-width: 767.98px)').matches) return
+    Collapse.getOrCreateInstance(navigation, { toggle: false }).hide()
+  }
+
+  navigation.addEventListener('click', (event) => {
+    if (event.target.closest('a')) closeNavigation()
   })
+
+  document.addEventListener('pointerdown', (event) => {
+    if (!navbar.contains(event.target)) closeNavigation()
+  }, { passive: true })
+
+  window.addEventListener('scroll', closeNavigation, { passive: true })
 }
 
 setupMobileNavigation()
